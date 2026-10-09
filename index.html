@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f2e9">
+  <meta name="description" content="Your flight manual for the motion-controlled space shooter. Learn to hold and calibrate your MPU6050 controller, tilt with the accelerometer, and fire with a downward gyroscope flick.">
+  <title>Flick & Fly — Pilot’s Field Guide</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="Flick and Fly home"><span class="brand-icon" aria-hidden="true">✳</span> FLICK & FLY<span class="brand-dot">®</span></a>
+    <nav aria-label="Main navigation"><a href="#controls">The controls</a><a href="#mission">Your mission</a><a href="#launch">Before you launch</a></nav>
+    <a class="header-cta" href="#gestures">See the gestures <span aria-hidden="true">↗</span></a>
+  </header>
+  <main>
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="status-dot"></span> THE MOTION-CONTROLLED SPACE SHOOTER</div>
+        <h1 id="hero-title">A little tilt.<br>A quick flick.<br><span>A big adventure.</span></h1>
+        <p class="hero-description">Pick up your motion sensor. A steady tilt steers your ship; a quick downward wrist flick fires. Learn how to hold it, find your center, and make each move count.</p>
+        <div class="hero-actions"><a class="button button-dark" href="#controls">Learn to fly <span aria-hidden="true">↘</span></a><a class="text-link" href="#gestures">Watch the sensor moves <span aria-hidden="true">↗</span></a></div>
+        <div class="hero-note"><span class="tiny-cross" aria-hidden="true">✦</span> No joysticks. Just you, your sensor, and the stars.</div>
+      </div>
+      <div class="hero-art" aria-label="Illustration of a spaceship dodging enemies in space">
+        <div class="art-topline"><span><i></i> FLIGHT SYSTEMS ONLINE</span><span>SECTOR 01</span></div>
+        <div class="orbital orbital-one"></div><div class="orbital orbital-two"></div>
+        <span class="art-spark spark-one">✦</span><span class="art-spark spark-two">+</span><span class="art-spark spark-three">✧</span>
+        <span class="coordinate">X: 064<br>Y: 128</span>
+        <svg class="space-scene" viewBox="0 0 520 450" aria-hidden="true">
+          <defs><pattern id="stars" width="64" height="60" patternUnits="userSpaceOnUse"><circle cx="13" cy="9" r="1" fill="#829495"/><circle cx="45" cy="43" r="1.2" fill="#b6c5b5"/></pattern></defs>
+          <rect width="520" height="450" fill="url(#stars)"/>
+          <g fill="#c8e1ad" class="enemy-art"><path d="M90 110h10v-10h10v10h30v-10h10v10h10v10h10v30h-10v10h-10v-20h-10v10h-30v-10h-10v20H90v-10H80v-30h10zm20 10v10h10v-10zm30 0v10h10v-10z"/><path d="M355 82h8V74h8v8h24v-8h8v8h8v8h8v24h-8v8h-8v-16h-8v8h-24v-8h-8v16h-8v-8h-8V90h8zm16 8v8h8v-8zm24 0v8h8v-8z"/></g>
+          <g fill="#fa754b"><path d="M390 206h10v-10h10v10h30v-10h10v10h10v10h10v30h-10v10h-10v-20h-10v10h-30v-10h-10v20h-10v-10h-10v-30h10zm20 10v10h10v-10zm30 0v10h10v-10z"/></g>
+          <g fill="#f4f2e9"><rect x="250" y="126" width="7" height="30"/><rect x="250" y="194" width="7" height="30"/></g>
+          <g class="hero-ship"><path d="M244 274h20v20h10v20h20v10h10v30h-20v-10h-10v-10h-40v10h-10v10h-20v-30h10v-10h20v-20h10z" fill="#f4f2e9"/><path d="M244 300h20v28h-20z" fill="#9ec6be"/><path d="M244 346h20v14h-5v14h-10v-14h-5z" fill="#fa754b"/></g>
+          <path d="M164 353c-23-20-34-48-30-74" stroke="#95b5a0" stroke-width="1.5" fill="none" stroke-dasharray="4 5"/><path d="m130 285 5-12 7 10" stroke="#95b5a0" stroke-width="1.5" fill="none"/>
+        </svg>
+        <div class="tilt-label"><span aria-hidden="true">↔</span> TILT TO NAVIGATE</div>
+        <div class="art-bottomline"><span>STEER. AIM. FIRE.</span><span class="heart-group" aria-hidden="true">♥ ♥ ♥</span></div>
+        <div class="art-sticker">MADE FOR<br><strong>HUMAN<br>HANDS.</strong><span aria-hidden="true">↗</span></div>
+      </div>
+    </section>
+    <div class="mission-strip"><div class="wrap"><span>YOUR FIRST FLIGHT STARTS HERE</span><span aria-hidden="true">✳</span><span>TILT. FLICK. REPEAT.</span><span aria-hidden="true">✳</span><span>SMALL MOVES. BIG SCORES.</span><span aria-hidden="true">✳</span></div></div>
+    <section class="controls wrap section" id="controls" aria-labelledby="controls-title">
+      <div class="section-intro"><div><p class="eyebrow">01 / GET A FEEL FOR IT</p><h2 id="controls-title">Two moves.<br>Endless possibilities.</h2></div><p>Your MPU6050 reads two different kinds of motion. <br>Learn which movement controls which action.</p></div>
+      <div class="control-grid">
+        <article class="control-card steer-card"><div class="card-top"><span class="pill">ACCELEROMETER / STEER</span><span class="card-number">01</span></div><div class="control-illustration" aria-hidden="true"><span class="motion-arrow left-arrow">↶</span><div class="sensor sensor-tilt"><div class="sensor-chip"></div><i></i><i></i><i></i><i></i><span>YOUR SENSOR</span></div><span class="motion-arrow right-arrow">↷</span></div><h3>Tilt to steer.</h3><p>Slowly lean the controller left or right and hold the tilt to steer. The accelerometer senses its tilt relative to gravity. Level it back to your calibrated neutral to stop.</p><div class="card-tip"><span aria-hidden="true">↔</span> Tilt is the position you hold.</div></article>
+        <article class="control-card fire-card"><div class="card-top"><span class="pill">GYROSCOPE / FIRE</span><span class="card-number">02</span></div><div class="control-illustration" aria-hidden="true"><div class="sensor sensor-flick"><div class="sensor-chip"></div><i></i><i></i><i></i><i></i><span>YOUR SENSOR</span></div><span class="flick-arc">↓</span><span class="flick-star">✦</span></div><h3>Flick down to fire.</h3><p>From neutral, tip the front edge of the controller downward with a quick wrist flick to fire. The gyroscope senses this brief rotation. Return gently to neutral before the next shot.</p><div class="card-tip"><span aria-hidden="true">✦</span> Flick down. Return to neutral. Repeat.</div></article>
+        <article class="control-card start-card"><div class="card-top"><span class="pill">NEW BEGINNINGS</span><span class="card-number">03</span></div><div class="control-illustration" aria-hidden="true"><div class="physical-button"><div></div></div><span class="button-ray ray-one"></span><span class="button-ray ray-two"></span><span class="button-ray ray-three"></span></div><h3>Press to begin.</h3><p>Keep the sensor still while the game calibrates. When it is ready, press the physical start button. Press it again after game over to restart.</p><div class="card-tip"><span aria-hidden="true">↻</span> There’s always another run.</div></article>
+      </div>
+    </section>
+    <section class="practice-section gesture-section" id="gestures" aria-labelledby="gestures-title"><div class="wrap practice-layout">
+      <div class="practice-copy"><p class="eyebrow">02 / WATCH IT. THEN TRY IT.</p><h2 id="gestures-title">One sensor.<br>Two kinds of motion.</h2><p>Follow the illustration with your physical controller. Watch the sensor move, then repeat the gesture while looking at the game’s TFT screen.</p>
+        <div class="gesture-options" role="group" aria-label="Choose a sensor gesture">
+          <button data-gesture="neutral" aria-pressed="true"><span>01</span> Neutral</button><button data-gesture="left" aria-pressed="false"><span>02</span> Tilt left</button><button data-gesture="right" aria-pressed="false"><span>03</span> Tilt right</button><button data-gesture="flick" aria-pressed="false"><span>04</span> Flick down</button>
+        </div>
+        <div class="gesture-explanation" aria-live="polite"><h3 id="gesture-heading">Start from your center.</h3><p id="gesture-instruction">Hold the controller comfortably and keep it still during startup calibration. Remember that position: it is your neutral.</p><div class="gesture-output"><span id="gesture-sensor">ACCELEROMETER + GYROSCOPE</span><p id="gesture-result">After calibration, returning here stops steering.</p></div></div>
+      </div>
+      <div class="gesture-demo" data-mode="neutral"><div class="arena-top"><span><i></i> SENSOR GESTURE GUIDE</span><button id="animation-toggle" aria-pressed="false">Pause motion</button></div>
+        <div class="gesture-visual"><div class="gesture-label"><span>IN YOUR HAND</span><strong id="visual-action">HOLD STILL</strong></div>
+          <div class="controller-rig" aria-hidden="true"><svg class="hand-outline" viewBox="0 0 240 180"><path d="M75 177 62 139c-4-12-12-18-21-24-11-8-23-18-18-26 5-9 15-5 25 2l17 10V41c0-15 20-15 20 0v38-57c0-15 20-15 20 0v53-53c0-14 20-14 20 0v53-38c0-14 20-14 20 0v52-19c0-13 20-12 20 2v52c0 20-9 32-16 53" fill="#29483c" stroke="#9ab39c" stroke-width="2"/></svg><div class="sensor held-sensor"><div class="sensor-chip"></div><i></i><i></i><i></i><i></i><span>MPU6050</span></div><div class="controller-wire"></div></div>
+          <div class="gesture-cues" aria-hidden="true"><span class="cue-left">↶</span><span class="cue-right">↷</span><span class="cue-flick">↓</span></div>
+          <div class="neutral-baseline"><span>YOUR CALIBRATED CENTER</span></div>
+          <div class="screen-response"><span>ON THE TFT SCREEN</span><div class="response-lane" aria-hidden="true"><div class="guide-bullet"></div><svg class="guide-ship" viewBox="0 0 40 46"><path fill="#f4f2e9" d="M16 0h8v12h4v8h8v4h4v12h-8v-4h-4v-4H12v4H8v4H0V24h4v-4h8v-8h4z"/><path fill="#94bda8" d="M16 12h8v12h-8z"/><path fill="#f2754d" d="M16 32h8v8h-2v6h-4v-6h-2z"/></svg></div><p id="visual-response">Ship stays centered</p></div>
+        </div><div class="diagram-note">Illustrated movement · watch your real ship respond</div>
+      </div>
+    </div></section>
+    <section class="drills section wrap" aria-labelledby="drills-title"><div class="section-intro"><div><p class="eyebrow">YOUR FIRST MINUTE WITH THE CONTROLLER</p><h2 id="drills-title">Build the muscle memory.</h2></div><p>Try these on the actual game. <br>Check off a step when you feel comfortable.</p></div>
+      <div class="drill-list"><label><input type="checkbox"><span class="drill-check" aria-hidden="true"></span><span><strong>Find the steering center.</strong><small>After calibration and starting the game, hold neutral. The ship should stay still.</small></span></label><label><input type="checkbox"><span class="drill-check" aria-hidden="true"></span><span><strong>Go left. Center. Go right.</strong><small>Gently tilt each way, returning to neutral between moves. Check that your ship follows.</small></span></label><label><input type="checkbox"><span class="drill-check" aria-hidden="true"></span><span><strong>Fire one deliberate shot.</strong><small>From neutral, tip the front edge down with a quick wrist flick. Settle back and let the firing cooldown pass before repeating.</small></span></label><label><input type="checkbox"><span class="drill-check" aria-hidden="true"></span><span><strong>Steer, aim, then flick.</strong><small>Move under an enemy, return toward neutral, then flick downward to shoot. Start with separate movements.</small></span></label></div><p class="drill-progress" id="drill-progress" aria-live="polite">0 of 4 moves practiced</p>
+    </section>
+    <section class="mission section wrap" id="mission" aria-labelledby="mission-title"><div class="section-intro"><div><p class="eyebrow">03 / KNOW YOUR MISSION</p><h2 id="mission-title">Stay sharp.<br>Stay in the stars.</h2></div><p>Aim for a longer run and a higher score. <br>Every wave asks a little more of you.</p></div><div class="mission-grid"><article><span class="mission-icon" aria-hidden="true">⌖</span><h3>Make every shot count.</h3><p>Line up with falling enemies and fire. Destroying them adds to your score.</p></article><article><span class="mission-icon" aria-hidden="true">♡</span><h3>Protect your lives.</h3><p>Dodge enemies and obstacles. Collisions cost a life; when none remain, your run ends.</p></article><article><span class="mission-icon" aria-hidden="true">↗</span><h3>Grow with the challenge.</h3><p>Enemies get faster and arrive more often as difficulty increases. Keep moving and look ahead.</p></article></div></section>
+    <section class="launch section wrap" id="launch" aria-labelledby="launch-title"><div class="launch-panel"><div><p class="eyebrow">04 / THE PRE-FLIGHT CHECK</p><h2 id="launch-title">Ready, pilot?</h2><p>Three small steps before you head into orbit.</p><a href="#gestures" class="text-link">Review the sensor gestures <span aria-hidden="true">↗</span></a></div><ol class="launch-steps"><li><span>01</span><div><h3>Get comfortable.</h3><p>Hold the sensor’s mounting board comfortably, in the same orientation throughout play. Leave slack in the wires so they do not pull your hand.</p></div></li><li><span>02</span><div><h3>Find your neutral.</h3><p>Hold still during startup calibration and wait for the ready screen. Keep this same neutral position in mind as you play.</p></div></li><li><span>03</span><div><h3>Start small. Have fun.</h3><p>Press the physical start button. Test a small left/right tilt first, then a quick downward wrist flick. Watch the TFT to learn your controller’s response.</p></div></li></ol></div></section>
+    <section class="sensor-help wrap" aria-labelledby="help-title"><p class="eyebrow">A BETTER FEEL FOR THE CONTROLS</p><h2 id="help-title">Something feel off?</h2><div class="help-grid"><details><summary>The ship moves when I’m holding still.</summary><p>Return to the position you held during calibration. If it still drifts, restart the device and hold the sensor steady throughout calibration. Keep the mounting orientation consistent.</p></details><details><summary>My flick doesn’t fire a shot.</summary><p>A slow lean is a steering gesture. Try a small, quick downward wrist flick: tip the controller’s front edge toward the floor, then return gently to neutral. Allow the firing cooldown to pass. If it still does not trigger, ask the team to check the firing sensitivity.</p></details><details><summary>I get extra shots or sudden movement.</summary><p>Use one short downward flick, then return gently to neutral and settle your hand. Avoid shaking the controller back and forth. Practice steering and firing separately before combining them.</p></details><details><summary>Do I move the whole controller sideways?</summary><p>Steer by changing its angle with a gentle tilt. Sliding it left or right across the table is not the intended control. Keep your grip relaxed and use your wrist.</p></details></div></section>
+  </main>
+  <footer class="wrap"><a class="brand" href="#"><span class="brand-icon" aria-hidden="true">✳</span> FLICK & FLY</a><p>A small screen. A whole universe.</p><span>ESDL PROJECT / PLAYER FIELD GUIDE</span></footer>
+</body>
+</html>
