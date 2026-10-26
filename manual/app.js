@@ -8,7 +8,7 @@
       ['P0.4','I2SRX_CLK/RD2/CAP2.0',81],['P0.5','I2SRX_WS/TD2/CAP2.1',80],['P0.6','I2SRX_SDA/SSEL1/MAT2.0',79],['P0.7','I2STX_CLK/SCK1/MAT2.1',78],['P0.8','I2STX_WS/MISO1/MAT2.2',77],['P0.9','I2STX_SDA/MOSI1/MAT2.3',76],['P0.10','TXD2/SDA2/MAT3.0',48],['P0.11','RXD2/SCL2/MAT3.1',49],['No connection','',null],['Ground','',null]]},
     CNB: {page:25, note:'JP4 (1,2) is required for CNB 8. CNB 8 and CNC 9 share P2.13 through JP4. Examples use keypad, PWM, interrupts and display enables.', contacts:[
       ['P1.23','MCI1/PWM1.4/MISO0',37],['P1.24','MCI2/PWM1.5/MOSI0',38],['P1.25','MCOA1/MAT1.1',39],['P1.26','MCOB1/PWM1.6/CAP0.0',40],['P2.10','EINT0/NMI',53],['P2.11','EINT1/I2STX_CLK',52],['P2.12','EINT2/I2STX_WS',51],['P2.13','EINT3/I2STX_SDA',50],['No connection','',null],['Ground','',null]]},
-    CNC: {page:25, note:'JP4 (2,3) is required for CNC 9. SPI, I2C and RS485 example blocks can share these routed lines; inspect ribbons and jumpers.', contacts:[
+    CNC: {page:25, note:'JP4 (2,3) is required for CNC 9 (p25). A ribbon to CNC1 can route these lines to U5 SPI EEPROM, U16 I²C RTC or U6 RS485; inspect whether it is fitted. JP12/JP13 select SPI versus RS485 at CNC1 (p35).', contacts:[
       ['P0.15','TXD1/SCK0/SCK',62],['P0.16','RXD1/SSEL0/SSEL',63],['P0.17','CTS1/MISO0/MISO',61],['P0.18','DCD1/MOSI0/MOSI',60],['P0.19','DSR1/SDA1',59],['P0.20','DTR1/SCL1',58],['P0.21','RI1/RD1',57],['P0.22','RTS1/TD1',56],['P2.13','I2STX_SDA',50],['Ground','',null]]},
     CND: {page:26, note:'JP5 is required for CND 4. CND 5 and 6 are unavailable when USB OTG uses them. Examples share CND with the LCD.', contacts:[
       ['P0.23','AD0.0/I2SRX_CLK/CAP3.0',9],['P0.24','AD0.1/I2SRX_WS/CAP3.1',8],['P0.25','AD0.2/I2SRX_SDA/TXD3',7],['P0.26','AD0.3/AOUT/RXD3',6],['P0.27','SDA0/USB/SDA',25],['P0.28','SCL0/USB_SCL',24],['P2.0','PWM1.1/TXD1',75],['P2.1','PWM1.2/RXD1',74],['No connection','',null],['Ground','',null]]}
@@ -27,12 +27,12 @@
   };
   const ROUTES = [
     ['mpu','GND','CNC',10,'ground','Common reference','Review supply and ground distribution.'],
-    ['mpu','SCL','CNC',6,'clock','Primary I²C clock','Review module logic levels, pull-ups and onboard I²C use.'],
-    ['mpu','SDA','CNC',5,'data','Primary I²C data','Review module logic levels, pull-ups and onboard I²C use.'],
+    ['mpu','SCL','CNC',6,'clock','Primary I²C clock','Review module logic levels and pull-up rail. If a ribbon joins CNC to CNC1, U16 RTC shares this line (manual p35); inspect actual cable and bus loading.'],
+    ['mpu','SDA','CNC',5,'data','Primary I²C data','Review module logic levels and pull-up rail. If a ribbon joins CNC to CNC1, U16 RTC shares this line (manual p35); inspect actual cable and bus loading.'],
     ['tft','GND','CNC',10,'ground','Common reference','Review supply and ground distribution.'],
-    ['tft','CS','CNC',2,'select','SPI chip select','Review controller input level and onboard SPI sharing.'],
-    ['tft','SDA','CNC',4,'data','SPI MOSI to display data','Review controller input level and onboard SPI sharing.'],
-    ['tft','SCK','CNC',1,'clock','SPI clock','Review controller input level and onboard SPI sharing.']
+    ['tft','CS','CNC',2,'select','SPI chip select','Review controller input level and select allocation. If CNC is linked to CNC1, U5 EEPROM shares SPI; JP13 selects SPI versus RS485 there (manual p35).'],
+    ['tft','SDA','CNC',4,'data','SPI MOSI to display data','Review controller input level. If CNC is linked to CNC1, U5 EEPROM shares MOSI (manual p35).'],
+    ['tft','SCK','CNC',1,'clock','SPI clock','Review controller input level. If CNC is linked to CNC1, U5 EEPROM shares clock; JP12 selects SPI versus RS485 there (manual p35).']
   ].map(([module,pin,connector,contact,category,purpose,review],order)=>({
     id:`${module}-${pin}`,module,pin,connector,contact,category,purpose,review,order,
     method:'Compatible 10-pin FRC/IDC ribbon to a verified, labelled breakout; individual jumper from breakout to module header or breadboard',
@@ -41,6 +41,7 @@
   }));
   const STATUS = {
     documented:'Documented mapping',awaiting:'Awaiting electrical review',blocked:'Blocked',
+    reviewed:'Electrically reviewed, physical wiring not approved',
     approved:'Approved for physical wiring',installed:'User-marked installed, not independently verified',
     tested:'Physically tested, with evidence recorded'
   };
@@ -138,7 +139,7 @@
   }
   function renderTables(){
     const q=$('reference-search').value.trim().toLowerCase(),mf=$('filter-module').value,cf=$('filter-connector').value,sf=$('filter-status').value;
-    $('mapping-status').textContent=`${SOURCE}, PDF pp24–26: connector contacts have Documented mapping evidence. Candidate module routes are Awaiting electrical review; unallocated pins are Blocked. Approved for physical wiring: 0. User-marked installed, not independently verified: 0. Physically tested, with evidence recorded: 0. Local plan choices do not change these statuses.`;
+    $('mapping-status').textContent=`${SOURCE}, PDF pp24–26: connector contacts have Documented mapping evidence. Candidate module routes are Awaiting electrical review; unallocated pins are Blocked. Electrically reviewed: 0. Approved for physical wiring: 0. User-marked installed, not independently verified: 0. Physically tested, with evidence recorded: 0. Local plan choices do not change these statuses.`;
     const routeRows=ROUTES.map(r=>({r,c:CONTACTS[`${r.connector}-${r.contact}`]}));
     const unresolved=Object.entries(MODULES).flatMap(([module,m])=>m.pins.filter(p=>!routeFor(module,p[0])).map(([pin,category,description])=>({r:{module,pin,connector:'—',contact:'—',method:'Undetermined',status:'blocked',test:'Not physically tested',review:description,id:`${module}-${pin}`},c:null})));
     const rows=[...routeRows,...unresolved].filter(({r,c})=>(!mf||r.module===mf)&&(!cf||r.connector===cf)&&(!sf||r.status===sf)&&(!q||`${MODULES[r.module].name} ${r.pin} ${r.connector} ${r.contact} ${c?.signal||''} ${r.review}`.toLowerCase().includes(q)));

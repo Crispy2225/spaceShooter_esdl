@@ -32,6 +32,8 @@ const { CONNECTORS, CONTACTS, ROUTES, validateConnection } = require('./app.js')
     await page.locator('#connector-tabs [data-connector="CND"]').click();
     await page.locator('#contact-grid [data-contact="CND-4"]').click();
     assert((await page.locator('#contact-info').innerText()).includes('JP5'));
+    await page.locator('#connector-tabs [data-connector="CNC"]').click();
+    assert((await page.locator('#connector-note').innerText()).includes('JP12/JP13'));
     await page.locator('#choose-tft').click();
     assert((await page.locator('#module-photo').getAttribute('src')).includes('tft-front'));
     await page.locator('#flip-module').click();
@@ -45,9 +47,12 @@ const { CONNECTORS, CONTACTS, ROUTES, validateConnection } = require('./app.js')
     assert.equal(await page.locator('#connect-wire').isEnabled(),true);
     assert.equal(await page.locator('#wire-svg .wire-preview').count(),1);
     assert.equal(await page.evaluate(()=>document.activeElement?.getAttribute('data-contact')),'CNC-6');
+    assert((await page.locator('#preview-detail').innerText()).includes('U16 RTC'));
     await page.locator('#connect-wire').click();
     assert.equal(await page.locator('#wire-svg .wire-added').count(),1);
     assert((await page.locator('#wire-list').innerText()).includes('Awaiting electrical review'));
+    assert((await page.locator('#mapping-status').innerText()).includes('Approved for physical wiring: 0'));
+    assert((await page.locator('#mapping-status').innerText()).includes('Electrically reviewed: 0'));
     await page.locator('#wire-list [data-remove="mpu-SCL"]').click();
     assert.equal(await page.locator('#wire-svg .wire-added').count(),0);
     await page.locator('#module-pin-list [data-pin="SCL"]').click();
