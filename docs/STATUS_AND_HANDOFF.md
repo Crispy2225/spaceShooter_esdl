@@ -1,32 +1,20 @@
-# Status and handoff
+# Flick & Fly status and handoff — 29 October 2026
 
-**Current phase (29 October 2026):** M5 game demonstration implemented and owner-reported physically tested; IEEE report evidence preparation remains open. Start with the [current-state and evidence index](CURRENT_STATE_AND_EVIDENCE_2026-10-29.md), [M5 README](../firmware/tests/restart_highscore_m5/README.md), and [M5 physical verification record](../firmware/tests/restart_highscore_m5/PHYSICAL_VERIFICATION.md).
+**Current state:** M5 is the preserved gameplay baseline. M6 is a reproducible offline three-class ML pipeline using generated values. M7 is a separate M5-derived image with the exported tree in its steering path. The M6 and M7 host tests passed and the M7 ARMCC 5 build produced a checked HEX. The owner now reports flashing M7 and observing gameplay that appears the same as M5. No independent programming record or instrumented board result has been supplied.
 
-## Evidence and blockers
+| Evidence level | Established result | Remaining limit |
+| --- | --- | --- |
+| Source and automated tests | [M5 steering](../firmware/tests/restart_highscore_m5/main.c) and [M7 steering](../firmware/tests/decision_tree_m7/main.c) use the same neutral/direction boundaries; the M7 host suite compared positions across the possible signed delta range at representative positions. [M6 report](../ml/evaluation.json) records 1,201 generated rows, a 1,026/175 split and equal tree/baseline scores on the generated holdout. | Generated labels are not measured sensor data; host parity is not a timing, robustness or physical accuracy result. |
+| Build artifact | [M7 build log](../firmware/build/2026-10-29/decision_tree_m7_first/build.log) records ARMCC 5.03 Build 24 success, C90 tree compilation, vector checksum and HEX below the high-score sectors. [M7 HEX](../firmware/build/2026-10-29/decision_tree_m7_first/decision_tree_m7_lpc1768.hex) SHA-256 is `CE5385387F5D0A8EEF2E1027EB0236466BFCDE5A49076DD842467E1B82DBA416`. | The local build path/toolchain is machine specific; a build log is not proof of board operation or score-sector retention through programming. |
+| Owner-reported physical observation | The [M5 physical record](../firmware/tests/restart_highscore_m5/PHYSICAL_VERIFICATION.md) reports M4.1/M5 gameplay, SW2 restart and power-cycle best-score retention. The owner now reports M7 was flashed and appeared to play like M5. | Exact M5 flashed image remains unidentified. M7 Flash Magic log, selected-file hash from the programming session, date/operator, trial counts, photos and detailed feature checklist are not archived. |
 
-**SOURCE/BUILD EVIDENCE:** M5 source implements calibrated tilt steering, automatic firing, enemies/collisions, score/lives, `GAME_OVER`, SW2 restart, and a flash-backed best score. Its build and HEX checks are recorded in the M5 README. This is software evidence.
+**Unverified details:** fitted module electrical and I/O compatibility, individual wire endpoints and voltages, M7 direction/orientation across repeat trials, score retention after firmware programming, journal interruption cases, real-data classification, MCU inference latency, memory and power. Flick-to-fire, four-command recognition and adaptive difficulty remain future work.
 
-**OWNER-REPORTED PHYSICAL OBSERVATIONS:** M4.1 calibration/gameplay remained functional; M5 SW2 restart worked; a saved high score survived board power off/on. M5 trial counts and numerical scores were not supplied.
+## Handoff for the student
 
-**UNRESOLVED:** The exact physically tested M5 HEX is not identified among two candidate builds. SW2 released/pressed voltage and continuity, fitted MPU6050/TFT module 5 V and signal-level compatibility, journal fault cases, and score retention through later Flash Magic programming are unverified. A reported programming setting is not a preservation test.
+1. Start at the [README](../README.md), [current evidence index](CURRENT_STATE_AND_EVIDENCE_2026-10-29.md), [M7 source/test record](../firmware/tests/decision_tree_m7/README.md) and [submission audit](FINAL_SUBMISSION_AUDIT.md). The [player guide](../index.html) explains controls and the prototype; it is not a live sensor demonstration.
+2. Preserve the exact owner-used M7 HEX identity and any Flash Magic verify log, screen photo/video, test date and observed startup/neutral/left/right/restart outcomes. Record what was actually checked. Keep the exact known-working M5 image and settings for rollback; the repository's final M5 candidate is not proven to be that image.
+3. Decide which M7 source, log and HEX artifacts belong in the submitted checkpoint. The current worktree contains unrelated untracked historical firmware build/test paths; inspect before selecting files. The user handles all Git operations.
+4. Present the project as a working game prototype with a generated-data ML pipeline and a separate M7 integration. Treat the four-command research proposal and all real-sensor evaluation as future work. Confirm the professor's required format and whether a final IEEE report is needed; the repository contains a proposal synopsis, not a completed report.
 
-**RESEARCH:** The [synopsis](Updated_ESDL_Synopsis_ML_IMU_Gesture_Recognition.docx), [research plan](RESEARCH_PLAN.md), and [architecture](ARCHITECTURE.md) describe a proposed threshold-versus-tree study. No completed dataset or comparative results are established. Do not describe flick-to-fire or adaptive difficulty as M5 behavior.
-
-**M6 offline demonstration (29 October 2026):** The [M6 README](../ml/README.md) and [evaluation report](../ml/evaluation.json) record 1,201 generated calibrated X-delta examples, a fixed 1,026/175 train/test split, and a depth-two scikit-learn tree. Tree, threshold baseline, and compiled host C agree on the held-out generated examples; both methods score 1.000 accuracy and macro F1 against labels created from the threshold rule. This is expected equivalence, not ML superiority or real-sensor accuracy. No measured sensor data, ARMCC 5 build, physical test, or M5 integration is claimed. The four-command research comparison remains proposed.
-
-**Historical handoff note:** The 22 October 2026 handoff described only the proposal-stage player guide and no identified embedded source or build path. Its professor-approval, wiring, and integration gates were an early plan. Subsequent milestone records supersede that *status*, while the original synopsis, research proposal, and dated milestone reports remain historical sources. See [project context](../PROJECT_CONTEXT.md) and the [milestone trail](CURRENT_STATE_AND_EVIDENCE_2026-10-29.md#milestone-trail).
-
-## Future session handoff template
-
-```text
-Date and phase:
-Files changed:
-Evidence or decisions verified (source/observer):
-Build/tests run (exact command or hardware procedure):
-Results and limitations:
-Risks or blockers:
-Pending user approval:
-Next task:
-```
-
-Update this page with observed results, not inferred success. Keep proposals in [DECISIONS.md](DECISIONS.md) until approved.
+Historical M0–M5 milestone records and the [original synopsis](Updated_ESDL_Synopsis_ML_IMU_Gesture_Recognition.docx) retain their original time-specific claims. Later status is recorded here and in the evidence index rather than silently rewriting those records.

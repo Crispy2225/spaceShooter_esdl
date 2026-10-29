@@ -1,28 +1,17 @@
-# Research plan
+# Research plan beyond the Flick & Fly prototype
 
-**Status: PROPOSED.** Novelty and publication suitability are **NOT YET ESTABLISHED**. This plan contains no measured results or achieved targets.
+## Current evidence and question
 
-An [M6 offline three-class demonstration](../ml/README.md) now exercises a generated tilt-only training/export/evaluation path. Its tree and threshold baseline are equivalent on labels generated from that threshold rule. It is not the proposed four-command experiment and supplies no measured detector result.
+[M6](../ml/README.md) demonstrates an end-to-end generated-data pipeline for one calibrated X-axis feature and three labels: `LEFT_TILT`, `NEUTRAL`, `RIGHT_TILT`. Its depth-two tree and threshold baseline agree perfectly on held-out **generated** examples because the labels were generated from that threshold rule. [M7](../firmware/tests/decision_tree_m7/README.md) compiles the tree into a separate LPC1768 firmware image; the owner reports that the flashed game appears to behave like M5. Neither result establishes an accuracy gain, robustness gain, or measured on-device cost.
 
-## Question and possible contribution
+**Research question:** Given the same recorded MPU6050 features and downstream game control, can a compact decision tree reduce false steering commands or missed deliberate tilts compared with a threshold baseline enough to justify its extra implementation cost on the LPC1768? Novelty and publication suitability require a verified related-work review and are not claimed here.
 
-**Candidate question:** For motion control of an LPC1768 space shooter, how does a threshold-based detector compare with a compact, offline-trained decision tree exported to C, given identical sensor features and game control handling?
+## Next experiment
 
-**Candidate gap:** A small, reproducible, on-device comparison of detection quality and MCU costs for this specific gesture set may be useful. A related-work review must establish whether comparable studies already exist before claiming any gap or novelty.
+1. Record and label actual MPU6050 streams for neutral holding, left tilt and right tilt. Save timestamps, raw axes, calibration offset, device orientation, session ID, label rules and any ambiguous transitions. Obtain appropriate permission before sharing recordings.
+2. Freeze train/test membership by **recording or session**, keeping adjacent samples from one recording together. If the sample size permits, hold out participants as well. Fit all preprocessing, thresholds and tree choices on training data only.
+3. Compare the tree and a threshold baseline on identical features and the same held-out recordings. Report per-class precision/recall/F1, macro F1, false activations during neutral/incidental motion and missed deliberate tilts, with denominators, counts and uncertainty where possible. Preserve predictions and the calculation script.
+4. Verify Python/C prediction parity on recorded features. If an on-device trial is approved, measure inference latency, code/data memory and power with a written method, units and repeated trials. Keep the M5 image and programming settings for rollback; distinguish build checks from observed board behavior.
+5. Only after a real three-class baseline is established, investigate multiple axes, temporal windows, mounting variation and additional gestures. A deliberate fire gesture would require a new labeled class and an explicit one-shot event/cooldown design. Do not describe it as a current control.
 
-**Potential contribution:** A documented gesture dataset and protocol, an interpretable threshold baseline, a compact tree, and measured tradeoffs between detection quality, latency, and memory. Dataset collection, release rights, feasibility, and contribution remain open.
-
-## Comparison design
-
-- Define labels **left**, **right**, **fire**, and **no-command**. Include deliberate gestures, neutral holding, transitions, and incidental movements that should not issue commands. Record label timing and ambiguity rules before collection.
-- Capture time-associated raw recordings with session, participant (if applicable), device orientation, and calibration context. Decide sampling and feature windows from the verified hardware and firmware.
-- Use the same preprocessing, calibration, feature definitions, and downstream control-event handling for both detectors. Tune the threshold baseline using training data only; train and select the decision tree offline using training data only.
-- Hold out complete recordings or sessions for final testing where possible; keep adjacent windows from one recording in the same split. Prefer participant-held-out evaluation if enough participants exist. Fix the split before final model selection, document class balance, and avoid tuning on the final test set.
-- Measure macro-F1 and per-class precision/recall/F1, false activations during no-command or incidental movement, missed gestures, inference latency on the MCU, and flash and RAM usage. Define the counting windows and measurement method before reporting results.
-- Compare errors and resource costs under the same test conditions. Report uncertainty or variability across sessions where the sample size permits, plus dataset and hardware limitations.
-
-## Related work and limits
-
-Review primary research and relevant embedded gesture-recognition work for comparable sensors, gesture sets, classifiers, datasets, evaluation splits, and MCU resource measurements. Record complete, verified citations and explain how this study differs. Do not invent papers or citation details.
-
-Likely limits include a small or user-specific dataset, mounting/orientation effects, label ambiguity, and performance that may not generalize beyond this board and gesture set. Actual hardware, firmware, dataset availability, and publication prospects remain unverified.
+The [synopsis](Updated_ESDL_Synopsis_ML_IMU_Gesture_Recognition.docx) remains a historical four-command proposal, not a record of completed experiments. Review primary papers and verified component sources before asserting a literature gap; do not infer it from the current prototype alone.

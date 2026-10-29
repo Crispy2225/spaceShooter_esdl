@@ -4,6 +4,8 @@
 
 This record preserves the working behavior while separating it from what source code and manuals establish. The older [hardware-readiness audit](hardware-readiness.md), [assumption register](../firmware/HARDWARE_ASSUMPTIONS.md), and [interactive manual](index.html) predate the new user report; their “no physical pass” statements describe their earlier evidence state and were not silently edited here.
 
+**M7 status update, 29 October 2026:** The [isolated M7 source](../firmware/tests/decision_tree_m7/main.c) retains the same I²C2, TFT and SW2 interfaces as M5 and changes only the steering classification decision. The owner reports flashing M7 and seeing gameplay that appears the same as M5. This adds a qualitative board observation, **not** a new wire-by-wire inspection, voltage measurement or confirmed module rating. The M5 signal map below remains the applicable documented route for M7; exact fitted contacts and electrical levels are still unverified.
+
 ## Current M5 signal map for the IEEE report
 
 This is the **source- and trainer-manual-supported signal plan** for the [M5 game source](../firmware/tests/restart_highscore_m5/main.c), with the owner's reported SW2 ribbon and working game noted separately. The 27 October combined-test evidence below remains historical. A functioning game does not establish each installed contact, jumper, supply voltage, or signal level. The [current-state index](../docs/CURRENT_STATE_AND_EVIDENCE_2026-10-29.md) and [M5 physical record](../firmware/tests/restart_highscore_m5/PHYSICAL_VERIFICATION.md) define the physical evidence boundary.

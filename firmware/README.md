@@ -2,6 +2,8 @@
 
 **Current milestone:** The isolated [M5 restart and high-score firmware](tests/restart_highscore_m5/README.md) implements the game. Its [physical verification record](tests/restart_highscore_m5/PHYSICAL_VERIFICATION.md) contains owner-reported SW2 restart, continued M4.1 gameplay/calibration, and best-score retention after board power off/on. The [M5 hardware signal map](../manual/hardware-connections.md#current-m5-signal-map-for-the-ieee-report) documents I²C2, TFT SPI/GPIO, and the reported CNB-to-CNB1 SW2 ribbon while marking unverified wire endpoints and electrical levels. The physically flashed M5 HEX remains unidentified, and retention through firmware reprogramming is unverified. See the [current-state and evidence index](../docs/CURRENT_STATE_AND_EVIDENCE_2026-10-29.md) for the milestone trail, hardware assumptions, and IEEE-report evidence gaps.
 
+**Later isolated M7:** [Decision-tree M7](tests/decision_tree_m7/README.md) retains the M5 game while compiling the M6 three-class tree for neutral/direction decisions. Host tests and the ARMCC 5 build passed. The owner now reports flashing M7 and seeing gameplay that appears the same as M5; no programming log or measured performance was supplied. M5 remains unchanged.
+
 ## Historical pre-integration tests (26–27 October 2026)
 
 These are three **separate** LPC1768 diagnostic programs for the 27 October

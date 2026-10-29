@@ -1,0 +1,11 @@
+; LPC1768 M7: same M5 boundary; firmware must fit below score sectors 14 and 15.
+; 0x10007FE0..0x10007FFF is withheld for the IAP ROM's top 32 RAM bytes.
+LR_ROM 0x00000000 0x0000E000 {
+    ER_ROM 0x00000000 0x0000E000 {
+        startup_LPC17xx.o (RESET, +First)
+        * (+RO)
+    }
+    RW_RAM 0x10000000 0x00007FE0 {
+        * (+RW, +ZI)
+    }
+}

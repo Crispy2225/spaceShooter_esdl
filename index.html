@@ -4,15 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f4f2e9">
-  <meta name="description" content="Your flight manual for the motion-controlled space shooter. Calibrate the MPU6050, tilt to steer, watch automatic firing, and use SW2 to restart after game over.">
-  <title>Flick & Fly — Pilot’s Field Guide</title>
+  <meta name="description" content="Flick & Fly LPC1768 space shooter: calibrated MPU6050 controls, M6 decision-tree pipeline, and M7 firmware evidence.">
+  <title>Flick & Fly — Game and ML Prototype</title>
   <link rel="stylesheet" href="styles.css">
   <script src="app.js" defer></script>
 </head>
 <body>
   <header class="site-header">
     <a class="brand" href="#" aria-label="Flick and Fly home"><span class="brand-icon" aria-hidden="true">✳</span> FLICK & FLY<span class="brand-dot">®</span></a>
-    <nav aria-label="Main navigation"><a href="#controls">The controls</a><a href="#mission">Your mission</a><a href="#launch">Before you launch</a><a href="#ml-lab">ML lab</a></nav>
+    <nav aria-label="Main navigation"><a href="#project">Project</a><a href="#controls">Controls</a><a href="#launch">Player guide</a><a href="#ml-lab">ML pipeline</a></nav>
     <a class="header-cta" href="#gestures">See the gestures <span aria-hidden="true">↗</span></a>
   </header>
   <main>
@@ -20,9 +20,9 @@
       <div class="hero-copy">
         <div class="eyebrow"><span class="status-dot"></span> THE MOTION-CONTROLLED SPACE SHOOTER</div>
         <h1 id="hero-title">A little tilt.<br>Automatic shots.<br><span>A big adventure.</span></h1>
-        <p class="hero-description">Pick up your motion sensor. A steady tilt steers your ship while it fires automatically. Learn how to hold it, find your center, and line up with enemies.</p>
+        <p class="hero-description">An LPC1768, MPU6050 and 128 × 160 TFT power this lab prototype. Calibrate your neutral grip, tilt to steer, and line up the ship while it fires automatically.</p>
         <div class="hero-actions"><a class="button button-dark" href="#controls">Learn to fly <span aria-hidden="true">↘</span></a><a class="text-link" href="#gestures">Watch the sensor moves <span aria-hidden="true">↗</span></a></div>
-        <div class="hero-note"><span class="tiny-cross" aria-hidden="true">✦</span> No joysticks. Just you, your sensor, and the stars.</div>
+        <div class="hero-note"><span class="tiny-cross" aria-hidden="true">✦</span> M5 game baseline · M6 offline ML · M7 isolated firmware</div>
       </div>
       <div class="hero-art" aria-label="Illustration of a spaceship dodging enemies in space">
         <div class="art-topline"><span><i></i> FLIGHT SYSTEMS ONLINE</span><span>SECTOR 01</span></div>
@@ -44,6 +44,16 @@
       </div>
     </section>
     <div class="mission-strip"><div class="wrap"><span>YOUR FIRST FLIGHT STARTS HERE</span><span aria-hidden="true">✳</span><span>TILT. AIM. REPEAT.</span><span aria-hidden="true">✳</span><span>SMALL MOVES. BIG SCORES.</span><span aria-hidden="true">✳</span></div></div>
+    <section class="project-overview wrap section" id="project" aria-labelledby="project-title">
+      <div class="section-intro"><div><p class="eyebrow">PROJECT AT A GLANCE</p><h2 id="project-title">A working game.<br>A documented ML path.</h2></div><p>The implemented prototype and the evidence behind each milestone.</p></div>
+      <div class="project-cards">
+        <article><span class="project-tag">M5 · GAME BASELINE</span><h3>Play by tilting.</h3><p>Calibrated left/right steering, automatic shots, enemies, collisions, score, lives, SW2 restart and a flash-backed best score. The owner reports M5 gameplay and power-cycle score retention.</p></article>
+        <article><span class="project-tag">M6 · OFFLINE MODEL</span><h3>Train and export.</h3><p>A depth-two decision tree is trained on generated X-delta examples, compared with a threshold baseline and exported to C. The generated labels are not sensor recordings.</p></article>
+        <article><span class="project-tag">M7 · SEPARATE IMAGE</span><h3>Run the same steering rule.</h3><p>The tree is compiled into an isolated M5-derived firmware image. Host parity and ARMCC build checks passed. The owner reports flashing M7 and seeing gameplay appear the same as M5.</p></article>
+      </div>
+      <div class="project-flow" aria-label="Implemented control architecture"><span>MPU6050<br><small>raw X acceleration</small></span><b aria-hidden="true">→</b><span>Calibration<br><small>signed X delta</small></span><b aria-hidden="true">→</b><span>M5 threshold / M7 tree<br><small>neutral · left · right</small></span><b aria-hidden="true">→</b><span>Game logic<br><small>step size · shots · score</small></span><b aria-hidden="true">→</b><span>TFT<br><small>visual feedback</small></span></div>
+      <p class="project-evidence">M7's board behavior is a qualitative owner report. The repository has no real-sensor classifier evaluation or measured MCU timing, memory or power result. <a href="docs/CURRENT_STATE_AND_EVIDENCE_2026-10-29.md">See the evidence boundary ↗</a></p>
+    </section>
     <section class="controls wrap section" id="controls" aria-labelledby="controls-title">
       <div class="section-intro"><div><p class="eyebrow">01 / GET A FEEL FOR IT</p><h2 id="controls-title">Steer. Aim.<br>Try again.</h2></div><p>Tilt steers your ship while it fires automatically. <br>Use SW2 to restart after game over.</p></div>
       <div class="control-grid">
@@ -75,9 +85,10 @@
     <section class="launch section wrap" id="launch" aria-labelledby="launch-title"><div class="launch-panel"><div><p class="eyebrow">04 / THE PRE-FLIGHT CHECK</p><h2 id="launch-title">Ready, pilot?</h2><p>Three small steps before you head into orbit.</p><a href="#gestures" class="text-link">Review the controls <span aria-hidden="true">↗</span></a></div><ol class="launch-steps"><li><span>01</span><div><h3>Get comfortable.</h3><p>Hold the sensor’s mounting board comfortably, in the same orientation throughout play. Leave slack in the wires so they do not pull your hand.</p></div></li><li><span>02</span><div><h3>Find your neutral.</h3><p>Hold still during startup calibration and wait for the ready screen. Keep this same neutral position in mind as you play.</p></div></li><li><span>03</span><div><h3>Start small. Have fun.</h3><p>When calibration succeeds, gameplay starts automatically. Test small left/right tilts and watch automatic shots on the TFT. Press SW2 only after GAME_OVER to restart.</p></div></li></ol></div></section>
     <section class="sensor-help wrap" aria-labelledby="help-title"><p class="eyebrow">A BETTER FEEL FOR THE CONTROLS</p><h2 id="help-title">Something feel off?</h2><div class="help-grid"><details><summary>The ship moves when I’m holding still.</summary><p>Return to the position you held during calibration. If it still drifts, restart the device and hold the sensor steady throughout calibration. Keep the mounting orientation consistent.</p></details><details><summary>I do not see a shot yet.</summary><p>The game fires automatically after its firing interval when no projectile is active. Watch for the current projectile to leave the screen, then look for the next shot.</p></details><details><summary>I see unexpected movement.</summary><p>Return gently to your calibrated neutral and keep the same grip and orientation. Avoid pulling on the sensor wires while steering.</p></details><details><summary>Do I move the whole controller sideways?</summary><p>Steer by changing its angle with a gentle tilt. Sliding it left or right across the table is not the intended control. Keep your grip relaxed and use your wrist.</p></details></div></section>
     <section class="ml-lab section wrap" id="ml-lab" aria-labelledby="ml-title">
-      <div class="section-intro"><div><p class="eyebrow">OFFLINE EXPERIMENT / M6</p><h2 id="ml-title">A tiny tilt classifier.</h2></div><p>A reproducible software proof of concept, separate from the game running on the LPC1768.</p></div>
+      <div class="section-intro"><div><p class="eyebrow">M6 → M7 / LIGHTWEIGHT CLASSIFICATION</p><h2 id="ml-title">A tiny tilt classifier.</h2></div><p>A reproducible ML workflow with a separate LPC1768 firmware candidate.</p></div>
       <div class="ml-lab-panel">
-        <p>The model takes one number: the current raw MPU6050 X acceleration count minus the neutral X count found at startup. A shallow decision tree assigns <strong>LEFT_TILT</strong>, <strong>NEUTRAL</strong>, or <strong>RIGHT_TILT</strong>. The example values are generated by a written rule, not recorded sensor measurements.</p>
+        <p>The model takes one number: signed raw MPU6050 X acceleration minus the neutral X count found at startup. A depth-two tree assigns <strong>LEFT_TILT</strong>, <strong>NEUTRAL</strong>, or <strong>RIGHT_TILT</strong>. Its 1,201 labeled examples are generated by a written rule, not recorded sensor measurements.</p>
+        <ol class="ml-pipeline" aria-label="Prototype ML pipeline"><li>Generate<br><small>deterministic labels</small></li><li>Train<br><small>shallow tree</small></li><li>Evaluate<br><small>fixed generated holdout</small></li><li>Export<br><small>readable C</small></li><li>Verify<br><small>host tests and ARMCC build</small></li><li>Observe<br><small>owner-reported M7 play</small></li></ol>
         <!-- M6_RESULTS_START -->
         <div class="ml-results" aria-label="Generated M6 evaluation">
           <h3>What the generated test shows</h3>
@@ -87,7 +98,9 @@
           <p>The labels come from that threshold rule, so the matching results are expected. These values do not measure real sensor accuracy.</p>
         </div>
         <!-- M6_RESULTS_END -->
-        <p>Run <code>python ml/run_all.py</code> to regenerate the labeled CSV, train the tree, compare a threshold baseline, export C, run host tests, and refresh these results. The tree is not running in the firmware; the current game still uses calibrated tilt movement and automatic firing. Next, labeled sensor sessions and an equal-feature comparison on real recordings are needed before considering integration. <a href="ml/README.md">Read the method, evidence, and limitations ↗</a></p>
+        <p>M7 uses the exported tree for neutral and direction decisions while keeping M5's movement step size and automatic firing. Three M7 host tests passed; ARMCC 5.03 built the separate HEX. The owner reports flashing it and seeing gameplay look like M5. The programming log, detailed board trial and physical performance measurements are not archived.</p>
+        <div class="ml-next"><div><h3>Completed prototype</h3><p>Generated-data training, baseline comparison, C export, Python/C checks, isolated M7 build and owner-reported gameplay observation.</p></div><div><h3>Future research</h3><p>Label actual sensor sessions; hold out recordings; compare errors on real data; explore multiple axes, time windows and a deliberate fire gesture; measure MCU costs with a defined method.</p></div></div>
+        <p class="ml-sources"><strong>Reproduce M6:</strong> install the pinned requirements, then run <code>python ml/run_all.py</code>. The M7 README gives the separate host-test command and optional build steps. Sources: <a href="ml/train_export.py">training and export</a> · <a href="ml/evaluation.json">evaluation report</a> · <a href="ml/tilt_tree.c">exported C</a> · <a href="firmware/tests/decision_tree_m7/main.c">M7 firmware</a> · <a href="firmware/tests/decision_tree_m7/README.md">M7 build and test</a> · <a href="docs/FINAL_SUBMISSION_AUDIT.md">submission audit</a>.</p>
       </div>
     </section>
   </main>

@@ -1,30 +1,11 @@
-# Project context
+# Flick & Fly project context
 
-**Project title:** Flick & Fly: Motion-Controlled Space Shooter.
+**Current prototype:** The LPC1768 game uses an MPU6050 over I²C2 and a 128 × 160 TFT over SPI. [M5](firmware/tests/restart_highscore_m5/README.md) implements calibrated tilt steering, automatic firing, enemies/collisions, score/lives, `GAME_OVER`, SW2 restart and a flash-backed best score. The owner reports M4.1/M5 gameplay and restart working, plus best-score retention after a board power cycle. The exact physically tested M5 HEX is unknown.
 
-**Current demonstration:** The LPC1768 [M5 firmware](firmware/tests/restart_highscore_m5/README.md) implements MPU6050 startup calibration and tilt steering, TFT gameplay with automatic firing, enemies, collisions, score/lives, `GAME_OVER`, SW2 restart, and a flash-backed best score. The owner reports successful board operation and power-cycle score retention in the [M5 physical verification record](firmware/tests/restart_highscore_m5/PHYSICAL_VERIFICATION.md). The exact physically tested M5 HEX, SW2 voltages, and module electrical details remain unidentified or unmeasured. The [current-state and evidence index](docs/CURRENT_STATE_AND_EVIDENCE_2026-10-29.md) separates source, build, and physical evidence.
+**ML contribution:** [M6](ml/README.md) supplies deterministic generated examples, a shallow three-class decision tree, a fixed generated holdout, threshold-baseline comparison, C export and five passing host tests. Its perfect generated-data agreement is expected because the labels use the same threshold rule. No labeled real-sensor dataset or real-world classifier accuracy exists.
 
-**Candidate research question (PROPOSED, not a completed result):** On the LPC1768, how does threshold-based gesture detection compare with a compact decision tree trained offline and deployed as C for left, right, fire, and no-command control? The [original synopsis](docs/Updated_ESDL_Synopsis_ML_IMU_Gesture_Recognition.docx), [research plan](docs/RESEARCH_PLAN.md), and [proposed architecture](docs/ARCHITECTURE.md) preserve that study. No completed classifier comparison or deployed tree is evidenced in the inspected M5 repository. The game currently fires automatically; it does not implement flick-to-fire or adaptive difficulty.
+**Integrated candidate:** [M7](firmware/tests/decision_tree_m7/README.md) is an isolated M5-derived firmware version that uses the generated C tree for neutral/left/right decisions while retaining M5's magnitude-based movement. Three host tests and an ARMCC 5 build passed. The owner's new report says M7 was flashed and gameplay appeared the same as M5. This is a qualitative, owner-reported board observation; the selected-file record, Flash Magic log, photos, trial counts and measured timing have not been supplied. M5 remains available as the preserved baseline.
 
-**M6 offline proof of concept:** [ml/README.md](ml/README.md) documents a generated three-class calibrated X-delta dataset, fixed generated holdout, shallow tree, threshold baseline, C export, and host tests. Tree and baseline are equivalent on the generated rule; no real-sensor validation or firmware integration is claimed.
+**Scope boundary:** The [synopsis](docs/Updated_ESDL_Synopsis_ML_IMU_Gesture_Recognition.docx) proposed left/right/fire/no-command research. The implemented tree has only left/right/neutral classes. Firing is automatic; flick-to-fire and adaptive difficulty are absent. Physical direction mapping, fitted module electrical details, score retention through later firmware programming, real-data accuracy, latency, memory and power remain unverified or unmeasured.
 
-## Current state
-
-**SOURCE/BUILD EVIDENCE:** The repository contains isolated M1–M5 firmware, build scripts, and HEX artifacts. M5 source implements the game functions above; its README records the build checks. The illustrated [player guide](index.html) is not a live sensor connection.
-
-**OWNER-REPORTED PHYSICAL EVIDENCE:** M4.1 calibration and gameplay remained functional; M5 SW2 restart worked; a saved high score survived switching board power off and on. The [physical record](firmware/tests/restart_highscore_m5/PHYSICAL_VERIFICATION.md) gives the evidence boundary. The exact flashed M5 HEX, SW2 electrical levels, fitted module 5 V/signal-level compatibility, and score retention through firmware reprogramming remain unverified.
-
-## Project documents
-
-- [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md) — scope and current state.
-- [docs/CURRENT_STATE_AND_EVIDENCE_2026-10-29.md](docs/CURRENT_STATE_AND_EVIDENCE_2026-10-29.md) — dated current-state and evidence index.
-- [manual/hardware-connections.md](manual/hardware-connections.md#current-m5-signal-map-for-the-ieee-report) — M5 source/manual signal map and unresolved physical routes.
-- [docs/ENGINEERING_PLAYBOOK.md](docs/ENGINEERING_PLAYBOOK.md) — permanent working rules.
-- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — proposed system flow.
-- [docs/RESEARCH_PLAN.md](docs/RESEARCH_PLAN.md) — candidate comparison study.
-- [docs/DECISIONS.md](docs/DECISIONS.md) — constraints, proposals, and open questions.
-- [docs/STATUS_AND_HANDOFF.md](docs/STATUS_AND_HANDOFF.md) — evidence, blockers, and session handoff.
-
-**Report preparation:** Define whether the final IEEE paper reports the completed prototype alone or includes a separately evidenced detector comparison. Gather the missing measurements and image identity listed in the [evidence index](docs/CURRENT_STATE_AND_EVIDENCE_2026-10-29.md).
-
-**Historical status:** A 22 October 2026 read-only inventory described only a proposal-stage website, no embedded source then identified, and an earlier public `main` state. Later milestone records supersede that *status*. Preserve the original proposal and milestone records; see the [engineering playbook](docs/ENGINEERING_PLAYBOOK.md).
+Start with the [README](README.md) for reproduction, the [current evidence index](docs/CURRENT_STATE_AND_EVIDENCE_2026-10-29.md) for claim boundaries, the [architecture](docs/ARCHITECTURE.md) for the two steering paths, the [hardware connection record](manual/hardware-connections.md) for documented routes, and the [final submission audit](docs/FINAL_SUBMISSION_AUDIT.md) for remaining student actions. Dated milestone and proposal records retain their historical wording.

@@ -6,6 +6,8 @@ This is a **generated-data software demonstration**, separate from the M5 game. 
 
 The one input is `delta_x = ((long)raw[0] - neutral[0]) * MOVE_SIGN`, with M5 `MOVE_AXIS=0` and `MOVE_SIGN=+1`. M5 decodes signed raw acceleration over I²C2 and averages 32 valid calibration samples for `neutral[0]`. Its current steering then converts delta magnitude into 1–5 pixels per frame after a ±150-count dead zone. The M6 tree classifies direction only; it does not preserve that speed behavior, use gyroscope or time-window features, recognize a flick, or issue a fire command.
 
+The separate [M7 firmware](../firmware/tests/decision_tree_m7/README.md) uses the tree for neutral/direction decisions **and keeps M5's magnitude-based step calculation**. Its host tests and ARMCC build passed. The owner now reports that M7 was flashed and gameplay appeared the same as M5; this is a qualitative board report, not a real-data classifier evaluation.
+
 `generate_dataset.py` writes [synthetic_tilt.csv](data/synthetic_tilt.csv) with `delta_x`, `label`, and fixed `train`/`test` split. Values −151, −150, +150, and +151 stay in training so the boundary can be learned. Every seventh value except those boundaries, plus four adjacent examples, is held out. This is a deterministic row split of **generated values from the same labeling rule**, not an independent recording or a generalization test. `train_export.py` fits `DecisionTreeClassifier(max_depth=2, random_state=0)` using only training rows and writes [tilt_tree.c](tilt_tree.c) and [evaluation.json](evaluation.json). The exporter converts half-count tree splits to integer `long` comparisons and emits plain C89-style nested `if` statements. No embedded dependency is added.
 
 ## Generated evaluation
@@ -41,10 +43,10 @@ python -m pip install -r ml/requirements.txt
 python ml/run_all.py
 ```
 
-The one command generates the CSV, trains and evaluates the model and threshold baseline on the fixed holdout, exports C, updates the bounded results in this README and the existing [player guide](../index.html), then runs the host tests. The tests compile the generated C with `gcc -std=c89 -Wall -Wextra -Werror -shared`, check class examples and boundaries, compare Python/tree/baseline/C on held-out generated examples, and verify exact regenerated outputs. They do not compile with ARMCC 5 or execute on the LPC1768.
+The one command generates the CSV, trains and evaluates the model and threshold baseline on the fixed holdout, exports C, updates the bounded results in this README and the existing [player guide](../index.html), then runs five host tests. The tests compile the generated C with `gcc -std=c89 -Wall -Wextra -Werror -shared`, check class examples and boundaries, compare Python/tree/baseline/C on held-out generated examples, and verify exact regenerated outputs. These M6 host tests do not execute on the LPC1768; M7's separate ARMCC build is documented in its README.
 
 ## Evidence limits and next research step
 
-The generated labels use the same rule as the threshold baseline, so equivalent predictions are expected. Neither model has been evaluated against measured sensor data. There is no measured real-world accuracy, board latency, memory, power, or physical orientation/sign validation for M6. M4.1/M5 firmware and historical milestone records remain unchanged; firmware integration needs separate authorization.
+The generated labels use the same rule as the threshold baseline, so equivalent predictions are expected. Neither model has been evaluated against measured sensor data. There is no measured real-world accuracy, board latency, memory, power, or instrumented physical orientation/sign validation for M6/M7. M4.1/M5 firmware and historical milestone records remain unchanged; the M7 integration is isolated.
 
 For an actual comparison, collect labeled, timestamped sensor sessions with calibration and mounting metadata; define transitions and ambiguous cases; split by recording or participant before training; compare the tree and a threshold baseline on the same features and held-out real recordings; verify C parity; then measure on-device behavior and cost before considering any gameplay change. The proposed four-command flick-to-fire study remains future work.

@@ -63,8 +63,8 @@
     tft:{label:'4 · TFT',detail:'#tft',steps:[
       ['Review display labels','TFT SDA is SPI data. CNC 1, 2 and 4 document clock, select and MOSI candidates.','RESET, A0, VCC and LED remain unallocated.'],
       ['Test standalone','After reviewed wiring, show colors, text and corner markers.','Record actual photographs and firmware.']]},
-    flash:{label:'5 · Flash',detail:'#program',steps:[['Verify programming path','Confirm the actual board, cable, clock and jumper settings.','Do not borrow another board’s settings.'],['Flash board only','Build, verify, flash and observe one board-only output.','No physical pass recorded.']]},
-    integrate:{label:'6 · Integrate',detail:'#integrate',steps:[['Preserve standalone passes','Keep separate MPU and TFT evidence tied to firmware IDs.','Both passes are still pending.'],['Compare detectors','Use timestamped sessions, a threshold baseline and a held-out shallow tree comparison.','No dataset or measured result exists here.']]}
+    flash:{label:'5 · Flash',detail:'#program',steps:[['Verify programming path','Confirm the actual board, cable, clock and jumper settings.','Do not borrow another board’s settings.'],['Flash board only','Build, verify, flash and observe one board-only output.','Historical step; later owner reports board operation.']]},
+    integrate:{label:'6 · Integrate',detail:'#integrate',steps:[['Preserve standalone passes','Keep separate MPU and TFT evidence tied to firmware IDs.','Historical step; later combined-test owner report exists.'],['Compare detectors','Use timestamped sessions, a threshold baseline and a held-out shallow tree comparison.','Generated M6 data only; no recorded-sensor comparison exists.']]}
   };
   function routeFor(module,pin){return ROUTES.find(r=>r.module===module&&r.pin===pin);}
   function validateConnection(module,pin,endpoint,selected=[]){
