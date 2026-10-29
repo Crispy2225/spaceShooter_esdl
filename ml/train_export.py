@@ -1,27 +1,38 @@
-"""M6 synthetic demonstration: train and export a one-feature decision tree.
+"""Generate, train, evaluate, and export the M6 synthetic tilt tree.
 
-No rows here are measured MPU6050 data. Run from the repository root with
-`python ml/train_export.py`; the generated C file is ml/tilt_tree.c.
+No inputs here are measured MPU6050 values. Run from any directory with
+`python path/to/ml/train_export.py`; outputs are saved beside this script.
 """
 
+import csv
+import json
 from pathlib import Path
 
+from sklearn.metrics import accuracy_score, confusion_matrix, f1_score
 from sklearn.tree import DecisionTreeClassifier, _tree
+
+from generate_dataset import DATASET, LABELS, label_for_delta, write_dataset
 
 
 ROOT = Path(__file__).resolve().parent
-CLASSES = ("LEFT_TILT", "NEUTRAL", "RIGHT_TILT")
+MODEL_C = ROOT / "tilt_tree.c"
+REPORT = ROOT / "evaluation.json"
 
 
-def synthetic_rows():
-    # An explicit teaching rule, sampled at each integer in this range.
-    # These counts are illustrative; they are not captured sensor readings.
-    values = range(-600, 601)
-    features = [[value] for value in values]
-    labels = ["LEFT_TILT" if value <= -150 else
-              "RIGHT_TILT" if value >= 150 else "NEUTRAL"
-              for value in values]
-    return features, labels
+def load_dataset(path=DATASET):
+    with Path(path).open(newline="", encoding="utf-8") as stream:
+        rows = list(csv.DictReader(stream))
+    return [(int(row["delta_x"]), row["label"], row["split"])
+            for row in rows]
+
+
+def fit_model(rows):
+    train = [(delta, label) for delta, label, split in rows if split == "train"]
+    model = DecisionTreeClassifier(max_depth=2, random_state=0)
+    model.fit([[delta] for delta, _ in train], [label for _, label in train])
+    if set(model.classes_) != set(LABELS) or model.get_depth() > 2:
+        raise RuntimeError("Unexpected model classes or depth")
+    return model
 
 
 def render_c(model):
@@ -44,10 +55,9 @@ def render_c(model):
             lines.append(f"{pad}return {model.classes_[index]};")
             return
         if tree.feature[node] != 0:
-            raise ValueError("Exporter supports only the calibrated X delta")
+            raise ValueError("Exporter supports only calibrated X delta")
         threshold = float(tree.threshold[node])
-        # All training features are integers. A float split x <= t is exactly
-        # x <= floor(t) for integer x, including negative half-count splits.
+        # All feature values are integers: x <= t equals x <= floor(t).
         integer_threshold = int(threshold // 1)
         lines.append(f"{pad}if (delta_x <= {integer_threshold}L) {{")
         visit(tree.children_left[node], indent + 4)
@@ -60,16 +70,54 @@ def render_c(model):
     return "\n".join(lines) + "\n"
 
 
+def model_metrics(actual, predicted):
+    return {
+        "accuracy": float(accuracy_score(actual, predicted)),
+        "macro_f1": float(f1_score(actual, predicted, labels=LABELS, average="macro")),
+        "confusion_matrix": confusion_matrix(actual, predicted, labels=LABELS).tolist(),
+    }
+
+
+def evaluate(model, rows):
+    held_out = [(delta, label) for delta, label, split in rows if split == "test"]
+    values = [delta for delta, _ in held_out]
+    actual = [label for _, label in held_out]
+    tree_predictions = model.predict([[delta] for delta in values]).tolist()
+    baseline_predictions = [label_for_delta(delta) for delta in values]
+    return {
+        "origin": "deterministic_generated_rule; no physical sensor samples",
+        "feature": "signed calibrated X delta, raw counts",
+        "range": [-600, 600],
+        "split": "fixed integer rule; boundary values -151,-150,150,151 in training",
+        "rows": {"total": len(rows), "train": sum(split == "train" for _, _, split in rows),
+                 "test": len(held_out)},
+        "classes": list(LABELS),
+        "model": {"type": "DecisionTreeClassifier", "max_depth": 2,
+                  "random_state": 0, "depth": int(model.get_depth()),
+                  "leaves": int(model.get_n_leaves()),
+                  "split_thresholds": [float(model.tree_.threshold[node])
+                                       for node in range(model.tree_.node_count)
+                                       if model.tree_.feature[node] != _tree.TREE_UNDEFINED]},
+        "tree_on_generated_holdout": model_metrics(actual, tree_predictions),
+        "baseline_on_generated_holdout": model_metrics(actual, baseline_predictions),
+        "tree_baseline_agreement": float(accuracy_score(baseline_predictions, tree_predictions)),
+        "samples": [{"delta_x": delta, "tree": str(model.predict([[delta]])[0]),
+                     "baseline": label_for_delta(delta)}
+                    for delta in (-151, -150, 0, 150, 151)],
+    }
+
+
 def main():
-    features, labels = synthetic_rows()
-    model = DecisionTreeClassifier(max_depth=2, random_state=0)
-    model.fit(features, labels)
-    if set(model.classes_) != set(CLASSES):
-        raise RuntimeError("Expected exactly the three documented classes")
-    output = ROOT / "tilt_tree.c"
-    output.write_text(render_c(model), encoding="utf-8", newline="\n")
-    print(f"synthetic rows: {len(features)}; depth: {model.get_depth()}; leaves: {model.get_n_leaves()}")
-    print(f"exported: {output}")
+    write_dataset()
+    rows = load_dataset()
+    model = fit_model(rows)
+    MODEL_C.write_text(render_c(model), encoding="utf-8", newline="\n")
+    report = evaluate(model, rows)
+    REPORT.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8", newline="\n")
+    print(f"generated dataset: {DATASET} ({report['rows']})")
+    print(f"tree depth={model.get_depth()}, leaves={model.get_n_leaves()}, split thresholds={report['model']['split_thresholds']}")
+    print(f"generated holdout: tree accuracy={report['tree_on_generated_holdout']['accuracy']:.3f}, baseline accuracy={report['baseline_on_generated_holdout']['accuracy']:.3f}, agreement={report['tree_baseline_agreement']:.3f}")
+    print(f"exported C: {MODEL_C}; report: {REPORT}")
 
 
 if __name__ == "__main__":

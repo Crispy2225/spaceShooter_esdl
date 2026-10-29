@@ -6,10 +6,10 @@
 
 enum tilt_class tilt_tree_predict(long delta_x)
 {
-    if (delta_x <= -150L) {
+    if (delta_x <= -151L) {
         return LEFT_TILT;
     } else {
-        if (delta_x <= 149L) {
+        if (delta_x <= 150L) {
             return NEUTRAL;
         } else {
             return RIGHT_TILT;

@@ -1,0 +1,100 @@
+{
+  "origin": "deterministic_generated_rule; no physical sensor samples",
+  "feature": "signed calibrated X delta, raw counts",
+  "range": [
+    -600,
+    600
+  ],
+  "split": "fixed integer rule; boundary values -151,-150,150,151 in training",
+  "rows": {
+    "total": 1201,
+    "train": 1026,
+    "test": 175
+  },
+  "classes": [
+    "LEFT_TILT",
+    "NEUTRAL",
+    "RIGHT_TILT"
+  ],
+  "model": {
+    "type": "DecisionTreeClassifier",
+    "max_depth": 2,
+    "random_state": 0,
+    "depth": 2,
+    "leaves": 3,
+    "split_thresholds": [
+      -150.5,
+      150.5
+    ]
+  },
+  "tree_on_generated_holdout": {
+    "accuracy": 1.0,
+    "macro_f1": 1.0,
+    "confusion_matrix": [
+      [
+        65,
+        0,
+        0
+      ],
+      [
+        0,
+        45,
+        0
+      ],
+      [
+        0,
+        0,
+        65
+      ]
+    ]
+  },
+  "baseline_on_generated_holdout": {
+    "accuracy": 1.0,
+    "macro_f1": 1.0,
+    "confusion_matrix": [
+      [
+        65,
+        0,
+        0
+      ],
+      [
+        0,
+        45,
+        0
+      ],
+      [
+        0,
+        0,
+        65
+      ]
+    ]
+  },
+  "tree_baseline_agreement": 1.0,
+  "samples": [
+    {
+      "delta_x": -151,
+      "tree": "LEFT_TILT",
+      "baseline": "LEFT_TILT"
+    },
+    {
+      "delta_x": -150,
+      "tree": "NEUTRAL",
+      "baseline": "NEUTRAL"
+    },
+    {
+      "delta_x": 0,
+      "tree": "NEUTRAL",
+      "baseline": "NEUTRAL"
+    },
+    {
+      "delta_x": 150,
+      "tree": "NEUTRAL",
+      "baseline": "NEUTRAL"
+    },
+    {
+      "delta_x": 151,
+      "tree": "RIGHT_TILT",
+      "baseline": "RIGHT_TILT"
+    }
+  ]
+}

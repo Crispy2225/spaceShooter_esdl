@@ -2,7 +2,7 @@
 
 **Status: PROPOSED.** Novelty and publication suitability are **NOT YET ESTABLISHED**. This plan contains no measured results or achieved targets.
 
-An [M6 offline three-class demonstration](../ml/README.md) now exercises a synthetic tilt-only training/export path. It is not the proposed four-command experiment and supplies no measured detector result.
+An [M6 offline three-class demonstration](../ml/README.md) now exercises a generated tilt-only training/export/evaluation path. Its tree and threshold baseline are equivalent on labels generated from that threshold rule. It is not the proposed four-command experiment and supplies no measured detector result.
 
 ## Question and possible contribution
 

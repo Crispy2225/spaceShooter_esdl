@@ -1,6 +1,8 @@
 # Proposed architecture
 
-**Status: PROPOSED / UNVERIFIED.** No firmware or hardware configuration has been inspected. Every module boundary, interface, and hardware assumption below requires confirmation against the real source and setup. No pins, driver names, sample rates, peripheral settings, or memory budgets are assigned here.
+**Original proposal status: PROPOSED / UNVERIFIED.** At the time this architecture was drafted, no firmware or hardware configuration had been inspected. Its module boundaries and four-command interface remain proposed. No memory budget or performance measurement is established here.
+
+**Later M6 note:** The [offline proof of concept](../ml/README.md) confirms one M5-compatible feature definition from source inspection: calibrated raw X delta. It trains and exports a three-class tree from generated examples and compares it with a threshold baseline on a generated holdout. The broader four-command control flow below remains a proposal and is not deployed in M5.
 
 ```text
 MPU6050 acquisition → preprocessing/calibration → shared features

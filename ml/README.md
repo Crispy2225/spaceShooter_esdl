@@ -1,18 +1,50 @@
 # M6: offline tilt decision-tree proof of concept
 
-This is a **synthetic-data demonstration**, not a trained sensor model or a deployed game feature. No labeled MPU6050 recordings were found in the project. `train_export.py` generates 1,201 illustrative integer X-delta values from -600 through +600 and assigns labels by a written rule: `delta_x <= -150` is `LEFT_TILT`, `delta_x >= 150` is `RIGHT_TILT`, and all values between are `NEUTRAL`. These are deliberately constructed examples, **not measured sensor samples**. The thresholds are teaching choices; they are not learned from physical behavior.
+This is a **generated-data software demonstration**, separate from the M5 game. No labeled MPU6050 recordings are in this project. The dataset generator creates integer examples from −600 through +600 calibrated X-axis counts and labels them with the M5-style dead zone: less than −150 is `LEFT_TILT`, greater than +150 is `RIGHT_TILT`, and −150 through +150 is `NEUTRAL`. The range is illustrative around the existing threshold, not a claim about observed motion or the full sensor range.
 
-The single input matches the *shape* of M5's steering feature: `delta_x = (long)raw[0] - neutral[0]` with `MOVE_AXIS=0` and `MOVE_SIGN=+1`. M5 obtains signed 16-bit raw acceleration from an I²C2 read and computes `neutral[0]` from 32 successful startup calibration samples. It handles failed reads by retaining the current ship position. Physical orientation and left/right mapping for a new user or mounting have not been validated for this tree. The tree uses no gyro or temporal feature and cannot recognize a flick or a fire command.
+## Feature and model
 
-The training script fits `DecisionTreeClassifier(max_depth=2, random_state=0)` and exports `tilt_tree.c` as plain nested `if` statements. The checked-in C file was generated with scikit-learn 1.7.2. A host test confirmed exact regenerated text and prediction parity for all 1,201 synthetic inputs. The exported interface is C89 style and uses `long`, as M5 does, but no ARMCC 5 compile or LPC1768 execution was run.
+The one input is `delta_x = ((long)raw[0] - neutral[0]) * MOVE_SIGN`, with M5 `MOVE_AXIS=0` and `MOVE_SIGN=+1`. M5 decodes signed raw acceleration over I²C2 and averages 32 valid calibration samples for `neutral[0]`. Its current steering then converts delta magnitude into 1–5 pixels per frame after a ±150-count dead zone. The M6 tree classifies direction only; it does not preserve that speed behavior, use gyroscope or time-window features, recognize a flick, or issue a fire command.
+
+`generate_dataset.py` writes [synthetic_tilt.csv](data/synthetic_tilt.csv) with `delta_x`, `label`, and fixed `train`/`test` split. Values −151, −150, +150, and +151 stay in training so the boundary can be learned. Every seventh value except those boundaries, plus four adjacent examples, is held out. This is a deterministic row split of **generated values from the same labeling rule**, not an independent recording or a generalization test. `train_export.py` fits `DecisionTreeClassifier(max_depth=2, random_state=0)` using only training rows and writes [tilt_tree.c](tilt_tree.c) and [evaluation.json](evaluation.json). The exporter converts half-count tree splits to integer `long` comparisons and emits plain C89-style nested `if` statements. No embedded dependency is added.
+
+## Generated evaluation
+
+<!-- M6_RESULTS_START -->
+The generated dataset has **1,201 rows**: **1,026 training** and **175 fixed held-out generated examples**. The depth-2 tree has 3 leaves and split points `-150.5` and `150.5` raw counts. Its integer C rules are `delta_x <= -151` → `LEFT_TILT`, `-150..150` → `NEUTRAL`, and `delta_x >= 151` → `RIGHT_TILT`.
+
+| Generated holdout result | Decision tree | Threshold baseline |
+| --- | ---: | ---: |
+| Accuracy | 1.000 | 1.000 |
+| Macro F1 | 1.000 | 1.000 |
+| Prediction agreement | 1.000 | — |
+
+Tree holdout confusion matrix in LEFT/NEUTRAL/RIGHT order: `[[65, 0, 0], [0, 45, 0], [0, 0, 65]]`. The baseline matrix is the same.
+
+| Calibrated X delta | Tree | Baseline |
+| ---: | --- | --- |
+| `-151` | `LEFT_TILT` | `LEFT_TILT` |
+| `-150` | `NEUTRAL` | `NEUTRAL` |
+| `0` | `NEUTRAL` | `NEUTRAL` |
+| `150` | `NEUTRAL` | `NEUTRAL` |
+| `151` | `RIGHT_TILT` | `RIGHT_TILT` |
+
+**Interpretation:** The labels were generated from the threshold baseline rule. Both methods being equivalent on this generated set is expected and does not establish superiority or real-sensor accuracy.
+<!-- M6_RESULTS_END -->
+
+## Reproduce
+
+From the repository root, use Python 3.12, a host GCC compatible with the C tests, and the pinned Python dependency:
 
 ```powershell
-# In a Python environment with package access:
 python -m pip install -r ml/requirements.txt
-python ml/train_export.py
-python -m unittest discover -s ml/tests -v
+python ml/run_all.py
 ```
 
-On 29 October 2026, the bundled Python 3.12.14, scikit-learn 1.7.2, and host MinGW GCC ran the training/export command above and `python -m unittest discover -s ml/tests -v`: **3 tests passed**. The C test compilation uses `gcc -std=c89 -Wall -Wextra -Werror -shared`; tests cover all 1,201 synthetic values plus explicit boundary and extreme inputs. In an environment without scikit-learn, the two C host tests can still run and the export/parity test reports a skip. Sample inputs and C outputs: `-151` and `-150` → `LEFT_TILT`; `-149`, `0`, and `149` → `NEUTRAL`; `150` and `151` → `RIGHT_TILT`. The learned integer rules are exactly `delta_x <= -150`, then `delta_x <= 149`, else right. This is a parity and implementation check against synthetic labels, **not a real-data accuracy estimate**.
+The one command generates the CSV, trains and evaluates the model and threshold baseline on the fixed holdout, exports C, updates the bounded results in this README and the existing [player guide](../index.html), then runs the host tests. The tests compile the generated C with `gcc -std=c89 -Wall -Wextra -Werror -shared`, check class examples and boundaries, compare Python/tree/baseline/C on held-out generated examples, and verify exact regenerated outputs. They do not compile with ARMCC 5 or execute on the LPC1768.
 
-M5 firmware remains untouched. Its existing `next_ship_x` maps tilt *magnitude* to 1–5 pixels per frame after a ±150 count dead zone; replacing it with three classes would remove that behavior. No labeled real data, measured physical sign/mounting mapping, real-world accuracy comparison, ARMCC compatibility build, or board timing/resource measurements support integration yet. A later experiment should collect labeled recordings with calibration and orientation metadata, split by session, train and test on held-out recordings, compare against the existing threshold control on the same feature, verify generated C parity, then assess control behavior and MCU cost before any firmware change.
+## Evidence limits and next research step
+
+The generated labels use the same rule as the threshold baseline, so equivalent predictions are expected. Neither model has been evaluated against measured sensor data. There is no measured real-world accuracy, board latency, memory, power, or physical orientation/sign validation for M6. M4.1/M5 firmware and historical milestone records remain unchanged; firmware integration needs separate authorization.
+
+For an actual comparison, collect labeled, timestamped sensor sessions with calibration and mounting metadata; define transitions and ambiguous cases; split by recording or participant before training; compare the tree and a threshold baseline on the same features and held-out real recordings; verify C parity; then measure on-device behavior and cost before considering any gameplay change. The proposed four-command flick-to-fire study remains future work.
