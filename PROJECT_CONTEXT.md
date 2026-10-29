@@ -6,6 +6,8 @@
 
 **Candidate research question (PROPOSED, not a completed result):** On the LPC1768, how does threshold-based gesture detection compare with a compact decision tree trained offline and deployed as C for left, right, fire, and no-command control? The [original synopsis](docs/Updated_ESDL_Synopsis_ML_IMU_Gesture_Recognition.docx), [research plan](docs/RESEARCH_PLAN.md), and [proposed architecture](docs/ARCHITECTURE.md) preserve that study. No completed classifier comparison or deployed tree is evidenced in the inspected M5 repository. The game currently fires automatically; it does not implement flick-to-fire or adaptive difficulty.
 
+**M6 offline proof of concept:** [ml/README.md](ml/README.md) documents a three-class tree built from an explicitly synthetic calibrated X-delta rule, standalone C logic, and host tests. It is separate from the M5 game and supplies no real-sensor validation.
+
 ## Current state
 
 **SOURCE/BUILD EVIDENCE:** The repository contains isolated M1–M5 firmware, build scripts, and HEX artifacts. M5 source implements the game functions above; its README records the build checks. The illustrated [player guide](index.html) is not a live sensor connection.

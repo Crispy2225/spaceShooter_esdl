@@ -40,6 +40,10 @@ The owner reports that a saved high score survived a **board power-off/power-on 
 
 ## Evidence still needed for the IEEE paper
 
+### M6 offline addendum
+
+The [M6 proof of concept](../ml/README.md) adds a deterministic **synthetic** three-class tilt dataset generator, a shallow scikit-learn tree training/export script, checked-in standalone C decision logic, and host tests. The C input has the same calibrated X-delta definition as M5's steering path, but the synthetic examples are not measured MPU6050 readings. The tree is not integrated into M5; it does not recognize fire or establish a real-data classifier comparison. Its separate test results and dependency limitation are recorded in the M6 README. All M5 source, images, and historical milestone records remain unchanged.
+
 - Confirm report scope and course requirements. If the proposed detector comparison is claimed, preserve a research question, labeled timestamped recordings, label rules, participants/sessions or an explicit single-user scope, fixed data splits, equal-feature baseline/tree procedures, and reproducible predictions and metrics. Otherwise present the completed game as a prototype and the comparison as future work.
 - Record the as-built board/module revisions, connector and jumper state, pin/rail mapping, and measured SW2 and module-facing voltage levels.
 - Tie physical tests to the exact flashed M5 image and programming settings; retain the log or board readback, test procedure, date/operator, counts, numerical scores, failures, and photos/video where available.

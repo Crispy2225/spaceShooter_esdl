@@ -2,6 +2,8 @@
 
 **Status: PROPOSED.** Novelty and publication suitability are **NOT YET ESTABLISHED**. This plan contains no measured results or achieved targets.
 
+An [M6 offline three-class demonstration](../ml/README.md) now exercises a synthetic tilt-only training/export path. It is not the proposed four-command experiment and supplies no measured detector result.
+
 ## Question and possible contribution
 
 **Candidate question:** For motion control of an LPC1768 space shooter, how does a threshold-based detector compare with a compact, offline-trained decision tree exported to C, given identical sensor features and game control handling?

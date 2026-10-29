@@ -12,6 +12,8 @@
 
 **RESEARCH:** The [synopsis](Updated_ESDL_Synopsis_ML_IMU_Gesture_Recognition.docx), [research plan](RESEARCH_PLAN.md), and [architecture](ARCHITECTURE.md) describe a proposed threshold-versus-tree study. No completed dataset or comparative results are established. Do not describe flick-to-fire or adaptive difficulty as M5 behavior.
 
+**M6 offline demonstration (29 October 2026):** The [M6 README](../ml/README.md) records a three-class scikit-learn tree trained on explicitly synthetic calibrated X-delta examples. The training/export run completed, and three host tests passed, including generated C text and Python/C prediction parity over the synthetic domain. No measured sensor data, ARMCC 5 build, physical test, or M5 integration is claimed. The four-command research comparison remains proposed.
+
 **Historical handoff note:** The 22 October 2026 handoff described only the proposal-stage player guide and no identified embedded source or build path. Its professor-approval, wiring, and integration gates were an early plan. Subsequent milestone records supersede that *status*, while the original synopsis, research proposal, and dated milestone reports remain historical sources. See [project context](../PROJECT_CONTEXT.md) and the [milestone trail](CURRENT_STATE_AND_EVIDENCE_2026-10-29.md#milestone-trail).
 
 ## Future session handoff template
