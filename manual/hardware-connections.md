@@ -1,8 +1,31 @@
 # Working MPU6050 + TFT hardware connection record
 
-**Recorded 27 October 2026.** The owner reports that the MPU6050 and 1.8-inch TFT now operate together on the physical LPC1768 trainer. This is a **user-reported physical pass**; this document does not claim an independent inspection, continuity measurement, voltage measurement, or witnessed Flash Magic log. The exact HEX programmed and several wire endpoints have not yet been recorded.
+**Combined-test record dated 27 October 2026.** The owner reports that the MPU6050 and 1.8-inch TFT operated together on the physical LPC1768 trainer. This is a **user-reported physical pass**; this document does not claim an independent inspection, continuity measurement, voltage measurement, or witnessed Flash Magic log. The exact HEX programmed and several wire endpoints have not yet been recorded. The current M5 map below is a later documentation update, not a new combined-test observation.
 
 This record preserves the working behavior while separating it from what source code and manuals establish. The older [hardware-readiness audit](hardware-readiness.md), [assumption register](../firmware/HARDWARE_ASSUMPTIONS.md), and [interactive manual](index.html) predate the new user report; their “no physical pass” statements describe their earlier evidence state and were not silently edited here.
+
+## Current M5 signal map for the IEEE report
+
+This is the **source- and trainer-manual-supported signal plan** for the [M5 game source](../firmware/tests/restart_highscore_m5/main.c), with the owner's reported SW2 ribbon and working game noted separately. The 27 October combined-test evidence below remains historical. A functioning game does not establish each installed contact, jumper, supply voltage, or signal level. The [current-state index](../docs/CURRENT_STATE_AND_EVIDENCE_2026-10-29.md) and [M5 physical record](../firmware/tests/restart_highscore_m5/PHYSICAL_VERIFICATION.md) define the physical evidence boundary.
+
+| Module signal | LPC1768 interface and pin | Documented trainer route / requirement | Evidence boundary |
+| --- | --- | --- | --- |
+| MPU6050 SDA | I²C2, P0.10/SDA2 | **Either** CNA contact 7 **or** CN6 contact 7 | Both locations expose the same MCU signal; actual selected contact and wire continuity are not recorded. |
+| MPU6050 SCL | I²C2, P0.11/SCL2 | **Either** CNA contact 8 **or** CN6 contact 8 | Both locations expose the same MCU signal; actual selected contact and wire continuity are not recorded. |
+| MPU6050 GND | Common ground | Connect to a verified trainer ground | Required return path; exact fitted ground contact and continuity are not recorded. |
+| MPU6050 VCC | Module supply | Use a supply compatible with the **actual breakout board** | Owner reported a 5 V connection; the breakout's 5 V input and I/O-level compatibility are not established. |
+| TFT SCK/CLK | Legacy SPI0, P0.15/SCK0 | CNC contact 1 | Source and manual support this signal; installed wire not individually verified. |
+| TFT SDA/DIN | Legacy SPI0, P0.18/MOSI0 | CNC contact 4; this `SDA` is **SPI data**, not I²C | Source and manual support this signal; installed wire not individually verified. |
+| TFT CS | GPIO output, P0.16 | CNC contact 2; active-low **software** chip select, not the SSEL0 peripheral function | Source and manual support this signal; installed wire not individually verified. |
+| TFT GND | Common ground | CNC contact 10 | Documented contact in the source plan; installed return path and continuity not recorded. |
+| TFT RESET | GPIO output, P0.21 | CNC contact 7 | Source-required GPIO and proposed connector route; installed wire not verified. |
+| TFT A0/DC | GPIO output, P0.22 | CNC contact 8 | Source-required GPIO and proposed connector route; installed wire not verified. |
+| TFT VCC / LED | Module supply / backlight | Compatible supply and reviewed backlight current path | Owner reported a 5 V connection; exact module input rating, MCU-facing I/O levels, and supply/backlight route are not established. |
+| SW2 | GPIO input, P2.12; reported active low, firmware pull-up | **CNB-to-CNB1 FRC ribbon** to the trainer SW2 circuit | Owner reports the ribbon and working restart. The CNB1 contact number is disputed by manuals; contact continuity and released/pressed voltages were not measured. |
+
+CNA and CN6 are **alternative contact locations**, not two simultaneous MPU6050 connections. The old CNC 5/P0.19/SDA1 and CNC 6/P0.20/SCL1 entries in the [pre-integration assumption register](../firmware/HARDWARE_ASSUMPTIONS.md) describe an **earlier I²C1 diagnostic proposal**, not the M3–M5 game wiring. Do not substitute them for I²C2. M5 uses the LPC1768 **legacy SPI peripheral** for TFT clock/data and GPIO for CS, RESET, and A0/DC; `SSEL0` on the trainer's CNC 2 label is a pin capability, not the configured chip-select function.
+
+Before reproducing this map on another assembly, record the selected CNA **or** CN6 path, connector pin-1 orientation, actual MPU/TFT ground and supply contacts, module revisions and voltage ratings, I²C pull-up rail, and continuity to each module pin. Check any CNA-to-CNA1, CNC-to-CNC1, and CNB-to-CNB1 ribbons and current jumper positions for shared contacts. In particular, CNC-to-CNC1 can expose the SPI lines to onboard U5/U6 paths selected by JP12/JP13; confirm occupancy before sharing them. SW2's reported active-low behavior does not replace a safe released/pressed voltage check at P2.12.
 
 ## Evidence and status terms
 
@@ -28,7 +51,7 @@ The owner supplied these as the two main connection references. They are screens
 
 ## Firmware identity and physical observation
 
-The only combined application source found is [`firmware/tests/mpu6050_tft_test/main.c`](../firmware/tests/mpu6050_tft_test/main.c), SHA-256 `1BEF2332F77804412D5E9BEEE2EDBC07C5CCEB691DD10CA2F226FA4C473AC997`. It is designed to show `MPU6050 TFT TEST` and signed raw X, Y, Z values. The repository's **candidate** artifact is [`firmware/build/2026-10-27/mpu6050_tft_test/mpu6050_tft_test_lpc1768.hex`](../firmware/build/2026-10-27/mpu6050_tft_test/mpu6050_tft_test_lpc1768.hex), SHA-256 `6E74546A816579CB2D354DB6DB2015BAB7C0D74CE7B639B10A1CD65F3C950700`. The build log names this source and HEX and records ARMCC 5.03 compile, startup assembly, link, HEX generation, and vector checksum `0xEFFFF44E` as successful with no diagnostics. It does not retain the exact commands, tool inputs, or a combined-test Keil target, so an independent source-to-HEX reproduction has not been established.
+At the 27 October combined-test review, the only combined diagnostic source identified was [`firmware/tests/mpu6050_tft_test/main.c`](../firmware/tests/mpu6050_tft_test/main.c), SHA-256 `1BEF2332F77804412D5E9BEEE2EDBC07C5CCEB691DD10CA2F226FA4C473AC997`. It is designed to show `MPU6050 TFT TEST` and signed raw X, Y, Z values. The repository's **candidate** artifact for that diagnostic is [`firmware/build/2026-10-27/mpu6050_tft_test/mpu6050_tft_test_lpc1768.hex`](../firmware/build/2026-10-27/mpu6050_tft_test/mpu6050_tft_test_lpc1768.hex), SHA-256 `6E74546A816579CB2D354DB6DB2015BAB7C0D74CE7B639B10A1CD65F3C950700`. The build log names this source and HEX and records ARMCC 5.03 compile, startup assembly, link, HEX generation, and vector checksum `0xEFFFF44E` as successful with no diagnostics. It does not retain the exact commands, tool inputs, or a combined-test Keil target, so an independent source-to-HEX reproduction has not been established.
 
 **Flashed-image identity is unverified.** The user has confirmed the physical combined result but has not identified the exact HEX or supplied its Flash Magic log. The HEX above is the *repository candidate corresponding to this source*, not a proven record of the image currently in the LPC1768. Record the actual flashed file/hash and observed screen photo when available.
 

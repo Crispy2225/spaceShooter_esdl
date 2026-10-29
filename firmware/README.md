@@ -1,6 +1,6 @@
 # Flick & Fly firmware
 
-**Current milestone:** The isolated [M5 restart and high-score firmware](tests/restart_highscore_m5/README.md) implements the game. Its [physical verification record](tests/restart_highscore_m5/PHYSICAL_VERIFICATION.md) contains owner-reported SW2 restart, continued M4.1 gameplay/calibration, and best-score retention after board power off/on. The physically flashed M5 HEX remains unidentified, and retention through firmware reprogramming is unverified. See the [current-state and evidence index](../docs/CURRENT_STATE_AND_EVIDENCE_2026-10-29.md) for the milestone trail, hardware assumptions, and IEEE-report evidence gaps.
+**Current milestone:** The isolated [M5 restart and high-score firmware](tests/restart_highscore_m5/README.md) implements the game. Its [physical verification record](tests/restart_highscore_m5/PHYSICAL_VERIFICATION.md) contains owner-reported SW2 restart, continued M4.1 gameplay/calibration, and best-score retention after board power off/on. The [M5 hardware signal map](../manual/hardware-connections.md#current-m5-signal-map-for-the-ieee-report) documents I²C2, TFT SPI/GPIO, and the reported CNB-to-CNB1 SW2 ribbon while marking unverified wire endpoints and electrical levels. The physically flashed M5 HEX remains unidentified, and retention through firmware reprogramming is unverified. See the [current-state and evidence index](../docs/CURRENT_STATE_AND_EVIDENCE_2026-10-29.md) for the milestone trail, hardware assumptions, and IEEE-report evidence gaps.
 
 ## Historical pre-integration tests (26–27 October 2026)
 
@@ -76,6 +76,10 @@ source/toolchain combination used for that command, **not** a saved Keil GUI
 project, matched oscillator, programmer or working trainer.
 
 ## Test B: MPU6050 protocol and blocked target port
+
+This section describes an early, unconfigured **I²C1 diagnostic proposal**.
+Its CNC 5/6 candidates are not the current M5 MPU6050 route; the game uses
+I²C2 on P0.10/P0.11 via the alternatives in the [M5 signal map](../manual/hardware-connections.md#current-m5-signal-map-for-the-ieee-report).
 
 `tests/mpu6050_test/mpu6050.c` holds only device-register operations. It
 checks a selected seven-bit address, reads WHO_AM_I, clears SLEEP, and reads

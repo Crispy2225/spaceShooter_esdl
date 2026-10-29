@@ -16,6 +16,7 @@
 
 - [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md) — scope and current state.
 - [docs/CURRENT_STATE_AND_EVIDENCE_2026-10-29.md](docs/CURRENT_STATE_AND_EVIDENCE_2026-10-29.md) — dated current-state and evidence index.
+- [manual/hardware-connections.md](manual/hardware-connections.md#current-m5-signal-map-for-the-ieee-report) — M5 source/manual signal map and unresolved physical routes.
 - [docs/ENGINEERING_PLAYBOOK.md](docs/ENGINEERING_PLAYBOOK.md) — permanent working rules.
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — proposed system flow.
 - [docs/RESEARCH_PLAN.md](docs/RESEARCH_PLAN.md) — candidate comparison study.
