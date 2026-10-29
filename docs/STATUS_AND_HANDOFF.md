@@ -1,18 +1,18 @@
 # Status and handoff
 
-**Current phase:** Awaiting professor approval; proposal-stage documentation only.
+**Current phase (29 October 2026):** M5 game demonstration implemented and owner-reported physically tested; IEEE report evidence preparation remains open. Start with the [current-state and evidence index](CURRENT_STATE_AND_EVIDENCE_2026-10-29.md), [M5 README](../firmware/tests/restart_highscore_m5/README.md), and [M5 physical verification record](../firmware/tests/restart_highscore_m5/PHYSICAL_VERIFICATION.md).
 
 ## Evidence and blockers
 
-**VERIFIED locally:** The folder contains the `README.md` player guide and its `index.html`, `styles.css`, and `app.js` website files. The README describes illustrative motion guidance and says the site is not a live sensor connection. No identifiable LPC1768 firmware, embedded build files, or hardware drivers were found in the inspected local folder.
+**SOURCE/BUILD EVIDENCE:** M5 source implements calibrated tilt steering, automatic firing, enemies/collisions, score/lives, `GAME_OVER`, SW2 restart, and a flash-backed best score. Its build and HEX checks are recorded in the M5 README. This is software evidence.
 
-**UNVERIFIED / BLOCKED:** The team reports access to the LPC1768, MPU6050, and ST7735, but exact variants, wiring, pin mapping, power levels, sensor mounting, display connection, toolchain, programmer, flashing, and working hardware functions have not been verified. No embedded source or build path is identified in this repository. At the read-only check on 2026-10-22, tracked local files matched public `main` at `f81d0d9499d807a26296995c0f123b1b7aca9f72`.
+**OWNER-REPORTED PHYSICAL OBSERVATIONS:** M4.1 calibration/gameplay remained functional; M5 SW2 restart worked; a saved high score survived board power off/on. M5 trial counts and numerical scores were not supplied.
 
-**Feasibility gates:** Seek professor approval of the scope, dataset, and evaluation plan. Before implementation, confirm the exact hardware and daily lab access, identify a working toolchain and programmer, and demonstrate flashing, MPU6050 acquisition, and the TFT independently. A seven-day implementation is conditional on these gates, not guaranteed.
+**UNRESOLVED:** The exact physically tested M5 HEX is not identified among two candidate builds. SW2 released/pressed voltage and continuity, fitted MPU6050/TFT module 5 V and signal-level compatibility, journal fault cases, and score retention through later Flash Magic programming are unverified. A reported programming setting is not a preservation test.
 
-**Proposed fallback for professor discussion:** If the programming or sensor path fails, keep the work at proposal/design stage until it works. If the display or decision-tree deployment slips, narrow the demo or comparison to what can be measured honestly; do not report unrun experiments.
+**RESEARCH:** The [synopsis](Updated_ESDL_Synopsis_ML_IMU_Gesture_Recognition.docx), [research plan](RESEARCH_PLAN.md), and [architecture](ARCHITECTURE.md) describe a proposed threshold-versus-tree study. No completed dataset or comparative results are established. Do not describe flick-to-fire or adaptive difficulty as M5 behavior.
 
-**Immediate next action:** Seek professor approval of the scope and fallback before implementation. Git mutations remain under the user's control.
+**Historical handoff note:** The 22 October 2026 handoff described only the proposal-stage player guide and no identified embedded source or build path. Its professor-approval, wiring, and integration gates were an early plan. Subsequent milestone records supersede that *status*, while the original synopsis, research proposal, and dated milestone reports remain historical sources. See [project context](../PROJECT_CONTEXT.md) and the [milestone trail](CURRENT_STATE_AND_EVIDENCE_2026-10-29.md#milestone-trail).
 
 ## Future session handoff template
 

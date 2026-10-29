@@ -1,27 +1,11 @@
-# Flick & Fly sensor player guide
+# Flick & Fly — LPC1768 space shooter
 
-**Proposal stage — awaiting professor approval.** This website illustrates the proposed LPC1768 space shooter controls. Hardware integration and operation have not been verified. See [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md) for the project status and research question.
+Flick & Fly is an Embedded Systems Lab game demonstration using an LPC1768, MPU6050, and TFT. The current isolated [M5 firmware](firmware/tests/restart_highscore_m5/README.md) has calibrated tilt steering, automatic firing, enemies and collisions, score and lives, `GAME_OVER`, SW2 restart, and a persistent best score. The owner reports that M5 was flashed, that restart and gameplay worked on the board, and that a high score survived switching board power off and on. The exact M5 HEX used for that physical test is **unidentified**. See the [dated current-state and evidence index](docs/CURRENT_STATE_AND_EVIDENCE_2026-10-29.md) and [M5 physical verification record](firmware/tests/restart_highscore_m5/PHYSICAL_VERIFICATION.md) for the evidence limits.
 
-A responsive, dependency-free player guide for the proposed LPC1768 space shooter with an MPU6050 accelerometer and gyroscope.
+The proposed threshold-detector versus shallow-decision-tree study in the [synopsis](docs/Updated_ESDL_Synopsis_ML_IMU_Gesture_Recognition.docx) and [research plan](docs/RESEARCH_PLAN.md) has not been established as a completed experiment. The current game fires automatically; flick-to-fire and adaptive difficulty are not implemented.
 
-The guide teaches calibration and neutral grip, accelerometer tilt for steering, quick downward wrist flicks detected by the gyroscope for firing, the physical start/restart button, and gameplay. Selectable animated illustrations demonstrate the gestures. A checklist provides drills to perform on the actual device, and troubleshooting explains drift, missed flicks, and unintended movement.
+## Player guide
 
-## Preview
+Open [index.html](index.html) in a browser for an illustrated guide to the current controls. It is an instructional website, not a live sensor connection or browser game; its motion illustrations do not show measured sensor readings. [app.js](app.js) drives the selectable illustrations and checklist, and [styles.css](styles.css) supplies the layout. No build step is required for the guide.
 
-Open `index.html` in a browser, or run:
-
-```sh
-python3 -m http.server 5173
-```
-
-Then visit http://localhost:5173.
-
-## Files
-
-- `index.html`: instructions, sensor illustrations, physical practice checklist, and troubleshooting.
-- `styles.css`: responsive layout and gesture animations.
-- `app.js`: demonstration selection, motion pause, and checklist progress.
-
-This is an instructional website, not a live sensor connection or browser game. Animations are illustrative and do not display measured sensor readings. The proposed firing gesture is a quick downward wrist flick, tipping the front edge of the controller toward the floor. Left/right tilt is reserved for steering. The sensor mounting orientation, register-axis mapping, thresholds, and cooldown duration remain firmware choices. No numeric hardware settings are invented.
-
-All artwork is local SVG and CSS. No build step, remote assets, or package installation is required.
+For the project's status and historical records, start with [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md), the [firmware overview](firmware/README.md), and the [evidence index](docs/CURRENT_STATE_AND_EVIDENCE_2026-10-29.md). Score retention through firmware reprogramming and the fitted modules' electrical compatibility remain unverified.

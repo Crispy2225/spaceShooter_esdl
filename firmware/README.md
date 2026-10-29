@@ -1,8 +1,11 @@
-# Flick & Fly pre-integration firmware tests
+# Flick & Fly firmware
+
+**Current milestone:** The isolated [M5 restart and high-score firmware](tests/restart_highscore_m5/README.md) implements the game. Its [physical verification record](tests/restart_highscore_m5/PHYSICAL_VERIFICATION.md) contains owner-reported SW2 restart, continued M4.1 gameplay/calibration, and best-score retention after board power off/on. The physically flashed M5 HEX remains unidentified, and retention through firmware reprogramming is unverified. See the [current-state and evidence index](../docs/CURRENT_STATE_AND_EVIDENCE_2026-10-29.md) for the milestone trail, hardware assumptions, and IEEE-report evidence gaps.
+
+## Historical pre-integration tests (26–27 October 2026)
 
 These are three **separate** LPC1768 diagnostic programs for the 27 October
-2026 lab. They are not a game or a hardware pass. Keep the existing player
-guide and interactive hardware manual intact. Review every item in
+2026 lab. They are not a game or a hardware pass **on their own**. Review the historical assumptions in
 `HARDWARE_ASSUMPTIONS.md` before using a test on the fitted hardware.
 
 ## Source and hardware basis
@@ -129,5 +132,6 @@ and compile check.
 Use `LAB_CHECKLIST.md` for the physical sequence. Keep build logs, exact
 firmware identity, programmer settings, connection review, UART traces and
 photos. Compilation, simulated output and browser illustrations are never
-recorded as physical MPU/TFT passes. The full game, classifier and ML work
-are later milestones.
+recorded as physical MPU/TFT passes. The full game was a later milestone
+relative to these pre-integration tests. The proposed classifier comparison
+remains unverified; see the current-state index.

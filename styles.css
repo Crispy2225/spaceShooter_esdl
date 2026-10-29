@@ -42,16 +42,15 @@
 .gesture-demo[data-mode=right] .controller-rig{animation:lean-right 4s ease-in-out infinite}
 .gesture-demo[data-mode=left] .guide-ship{animation:ship-left 4s ease-in-out infinite}
 .gesture-demo[data-mode=right] .guide-ship{animation:ship-right 4s ease-in-out infinite}
-.gesture-demo[data-mode=left] .cue-left,.gesture-demo[data-mode=right] .cue-right,.gesture-demo[data-mode=flick] .cue-flick{opacity:1}
-.gesture-demo[data-mode=flick] .controller-rig{animation:wrist-flick 3s ease-in-out infinite}
-.gesture-demo[data-mode=flick] .guide-bullet{animation:flick-shot 3s linear infinite}
+.gesture-demo[data-mode=left] .cue-left,.gesture-demo[data-mode=right] .cue-right{opacity:1}
+.gesture-demo[data-mode=auto] .guide-bullet{animation:auto-shot 3s linear infinite}
 .gesture-demo.is-paused *{animation-play-state:paused!important}
 @keyframes lean-left{0%,15%,75%,100%{transform:rotate(0)}30%,60%{transform:rotate(-17deg)}}
 @keyframes lean-right{0%,15%,75%,100%{transform:rotate(0)}30%,60%{transform:rotate(17deg)}}
 @keyframes ship-left{0%,15%{transform:translateX(0)}60%,100%{transform:translateX(-100px)}}
 @keyframes ship-right{0%,15%{transform:translateX(0)}60%,100%{transform:translateX(100px)}}
-@keyframes wrist-flick{0%,30%,58%,100%{transform:perspective(550px) rotateX(0) translateY(0)}36%,42%{transform:perspective(550px) rotateX(45deg) translateY(12px)}}
-@keyframes flick-shot{0%,35%{opacity:0;transform:translateY(0)}36%{opacity:1;transform:translateY(0)}70%{opacity:1;transform:translateY(-45px)}71%,100%{opacity:0;transform:translateY(-45px)}}
+@keyframes auto-shot{0%,35%{opacity:0;transform:translateY(0)}36%{opacity:1;transform:translateY(0)}70%{opacity:1;transform:translateY(-45px)}71%,100%{opacity:0;transform:translateY(-45px)}}
+.sensor-auto{background:#d6a080;transform:rotate(0)}
 .drills{padding-bottom:24px}.drill-list{display:grid;grid-template-columns:1fr 1fr;gap:16px}.drill-list label{position:relative;background:#e9eddf;border:1px solid var(--line);border-radius:5px;padding:22px;display:flex;gap:16px;cursor:pointer;align-items:flex-start}.drill-list input{position:absolute;opacity:0;width:23px;height:23px;left:22px;top:22px}.drill-check{width:23px;height:23px;border:1px solid #698362;flex-shrink:0;border-radius:3px;background:var(--paper);display:grid;place-items:center}.drill-list input:checked+.drill-check{background:var(--ink);color:var(--paper)}.drill-list input:checked+.drill-check:after{content:'✓';font-size:15px}.drill-list input:focus-visible+.drill-check{outline:3px solid var(--orange);outline-offset:4px}.drill-list strong{display:block;font-size:15px;margin:2px 0 8px;letter-spacing:-.2px}.drill-list small{display:block;font-size:12px;line-height:1.8;color:var(--muted)}.drill-progress{font:10px 'Courier New',monospace;letter-spacing:.5px;margin:22px 0 0;color:var(--muted)}
 .sensor-help{padding-bottom:75px}.sensor-help .eyebrow{margin-bottom:16px}.sensor-help h2{margin-bottom:28px}.help-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}.help-grid details{border:1px solid var(--line);padding:19px 21px;border-radius:4px}.help-grid summary{cursor:pointer;font-size:13px;font-weight:700;line-height:1.7}.help-grid details p{font-size:12px;color:var(--muted);line-height:1.8;margin:15px 0 0}
 @media(max-width:1000px){:root .gesture-section .practice-layout{gap:30px}.gesture-options button{font-size:11px;padding:12px 8px}.gesture-options button span{margin-right:7px}.gesture-demo .arena-top{font-size:8px;padding-inline:13px}.gesture-visual{padding-inline:18px}.gesture-label{letter-spacing:0;font-size:7px}.gesture-label strong{font-size:8px}}
