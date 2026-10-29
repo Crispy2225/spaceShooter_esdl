@@ -1,0 +1,38 @@
+Evidence: board_smoke_single, lcd_test and mpu6050_lcd_test logs; isolated combined raw HEX reproduced byte-for-byte.
+Baseline checksum matched: 0xEFFFF44E; 315 records
+M2 source: C:\Users\Laptop\OneDrive\Documents\MIT\spaceShooter_ESDL\firmware\tests\tft_renderer_m2\main.c; SHA-256 9A77FA15B5278F07FE9B99F2A06167D7F679BB79BE6D484CE44B4B8296619FD6
+system: C:\Keil\ARM\Startup\NXP\LPC17xx\system_LPC17xx.c; SHA-256 D474807C1A8F9F5EFFDCEA23284CAC7B40384F4D4042C5F753A7C026504A0383
+startup: C:\Keil\ARM\Startup\NXP\LPC17xx\startup_LPC17xx.s; SHA-256 82618242DBB65CC72375FFC3B5F8F27798BD110FEC30DA7F671F9F0250EDBF3D
+LPC17xx.h: C:\Keil\ARM\INC\NXP\LPC17xx\LPC17xx.h; SHA-256 7ABD2DC75636A25C916238587C4EFF65945328501B8B1DF934053B592964568C
+COMMAND: C:\Keil\ARM\ARMCC\bin\armcc.exe --vsn
+ARM C/C++ Compiler, 5.03 [Build 24] [MDK-ARM Lite]
+Software supplied by: ARM Limited
+
+EXIT: 0
+COMMAND: C:\Keil\ARM\ARMCC\bin\armasm.exe --vsn
+ARM Assembler, 5.03 [Build 24] [MDK-ARM Lite]
+Software supplied by: ARM Limited
+
+EXIT: 0
+COMMAND: C:\Keil\ARM\ARMCC\bin\armlink.exe --vsn
+ARM Linker, 5.03 [Build 24] [MDK-ARM Lite]
+Software supplied by: ARM Limited
+
+EXIT: 0
+COMMAND: C:\Keil\ARM\ARMCC\bin\fromelf.exe --vsn
+ARM FromELF, 5.03 [Build 24] [MDK-ARM Lite]
+Software supplied by: ARM Limited
+
+EXIT: 0
+COMMAND: C:\Keil\ARM\ARMCC\bin\armcc.exe --cpu=Cortex-M3 -O0 --c99 --apcs=interwork -IC:\Keil\ARM\INC\NXP\LPC17xx -IC:\Keil\ARM\CMSIS\Include -c C:\Users\Laptop\OneDrive\Documents\MIT\spaceShooter_ESDL\firmware\tests\tft_renderer_m2\main.c -o main.o
+EXIT: 0
+COMMAND: C:\Keil\ARM\ARMCC\bin\armcc.exe --cpu=Cortex-M3 -O0 --c99 --apcs=interwork -IC:\Keil\ARM\INC\NXP\LPC17xx -IC:\Keil\ARM\CMSIS\Include -c C:\Keil\ARM\Startup\NXP\LPC17xx\system_LPC17xx.c -o system_LPC17xx.o
+EXIT: 0
+COMMAND: C:\Keil\ARM\ARMCC\bin\armasm.exe --cpu=Cortex-M3 C:\Keil\ARM\Startup\NXP\LPC17xx\startup_LPC17xx.s -o startup_LPC17xx.o
+EXIT: 0
+COMMAND: C:\Keil\ARM\ARMCC\bin\armlink.exe --cpu=Cortex-M3 --ro-base=0x00000000 --rw-base=0x10000000 --entry=Reset_Handler --no_remove --first=startup_LPC17xx.o(RESET) startup_LPC17xx.o system_LPC17xx.o main.o -o tft_renderer_m2.axf
+EXIT: 0
+COMMAND: C:\Keil\ARM\ARMCC\bin\fromelf.exe --i32combined --output tft_renderer_m2_raw.hex tft_renderer_m2.axf
+EXIT: 0
+VECTOR CHECKSUM: 0xEFFFF486; 255 valid HEX records
+FINAL HEX: C:\Users\Laptop\OneDrive\Documents\MIT\spaceShooter_ESDL\firmware\build\2026-10-29\tft_renderer_m2_final\tft_renderer_m2_lpc1768.hex; 11120 bytes; SHA-256 9B3EF1D9A4CAEEC07354BE7A741260BB91C2B8F56680B3E16AC52DBCC13A0FFE
